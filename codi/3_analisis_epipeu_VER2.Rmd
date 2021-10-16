@@ -151,7 +151,10 @@ devtools::source_url(link_source)
 ############
 #17.02.2021#
 ############
+
 conductor_codis<-here::here("CATALEG_PROYECTO_Manel.xlsx")
+#[15.10.2021]
+conductor_codis2<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
 conductor<-here::here("Conductor_PROYECTO_Manel_VER2.xlsx")
 ```
 
@@ -267,7 +270,7 @@ dt_plana_exc$ENTRADA2<-paste0(dt_plana_exc$ANY,dt_plana_exc$MES,dt_plana_exc$DIA
 
 #table(dt_plana_exc$ENTRADA2)
 
-#dt_plana_exc$DATA_DM3<-as.character(dt_plana_exc$DATA_DM2)
+#t_plana_exc$DATA_DM3<-as.character(dt_plana_exc$DATA_DM2)
 #dt_plana_exc$MES<-substr(dt_plana_exc$DATA_DM3,5,6)
 #dt_plana_exc$ANY<-substr(dt_plana_exc$DATA_DM3,1,4)
 #dt_plana_exc$DATA_DM3<-paste0(dt_plana_exc$ANY,dt_plana_exc$MES)
@@ -370,7 +373,7 @@ print("En el pitjor dels casos haurien de sortir com a minim un 50% (N > 3.200).
 
 ```{r codis_diabetes2, include=T}
 
-readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,DM2,Descripcio)%>% filter(DM2=="DM2")%>%select(cod,Descripcio)%>% knitr::kable(caption="ICD10 Diabetes TIPO 2")
+readxl::read_excel(conductor_codis2,col_types = "text")%>%select(cod,AGR1,Descripcio)%>% filter(AGR1=="DM2_incusion")%>%select(cod,Descripcio)%>% knitr::kable(caption="Códigos ICD10  y  Fármacos Diabetes TIPO 2")
 
 
 ```

@@ -107,7 +107,7 @@ dt_plana<-dt_plana%>% mutate(tabac2=case_when(tabac.valor==0~0,
 
 #dt_plana<-dt_plana %>% mutate(age=as.numeric(lubridate::ymd(params$bd.dindex)-lubridate::ymd(dnaix))/365.25)
 
-dt_plana<-dt_plana %>% mutate(age=as.numeric(lubridate::ymd(DG.DM2)-lubridate::ymd(dnaix))/365.25)
+dt_plana<-dt_plana %>% mutate(age=as.numeric(lubridate::ymd(dtindex)-lubridate::ymd(dnaix))/365.25)
 
 
 
@@ -142,6 +142,113 @@ dt_plana<-dt_plana%>%mutate(age4.cat=case_when(     age<30~ 1,
 
 ```{r recodificacions2}
 #II)Problemes de Salut.
+
+#dt_index2<- 
+#  dt_facturacio %>% agregar_facturacio(finestra.dies = c(-Inf,0),
+#                                     dt.agregadors = dt_temp1 %>% transmute(cod,agr="Antidiabetic"),
+#                                     prefix = "",camp_agregador="agr",agregar_data=T) %>% 
+#                                     transmute(idp,dtindex=data.to.string(Antidiabetic) %>% as.numeric())
+##
+
+
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.Metformina=data.to.string(FF.EVENT.Metformina)%>% as.numeric())
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.pioglitazona=data.to.string(FF.EVENT.pioglitazona)%>% as.numeric())
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.Sulfonilureas=data.to.string(FF.EVENT.Sulfonilureas)%>% as.numeric())
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.Glinides=data.to.string(FF.EVENT.Glinides)%>% as.numeric())
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.ISGLT2=data.to.string(FF.EVENT.ISGLT2)%>% as.numeric())
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.IDPP4=data.to.string(FF.EVENT.IDPP4)%>% as.numeric())
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.aGLP1=data.to.string(FF.EVENT.aGLP1)%>% as.numeric())
+dt_plana<-dt_plana%>%
+  mutate (FF.EVENT.Insul=data.to.string(FF.EVENT.Insul)%>% as.numeric())
+
+
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FF.EVENT.Metformina=ifelse(is.na(FF.EVENT.Metformina),100000000,FF.EVENT.Metformina))  
+dt_plana<-dt_plana%>%mutate(FF.EVENT.pioglitazona=ifelse(is.na(FF.EVENT.pioglitazona),100000000,FF.EVENT.pioglitazona))  
+dt_plana<-dt_plana%>%mutate(FF.EVENT.Sulfonilureas=ifelse(is.na(FF.EVENT.Sulfonilureas),100000000,FF.EVENT.Sulfonilureas))  
+dt_plana<-dt_plana%>%mutate(FF.EVENT.Glinides=ifelse(is.na(FF.EVENT.Glinides),100000000,FF.EVENT.Glinides))  
+dt_plana<-dt_plana%>%mutate(FF.EVENT.ISGLT2=ifelse(is.na(FF.EVENT.ISGLT2),100000000,FF.EVENT.ISGLT2))  
+dt_plana<-dt_plana%>%mutate(FF.EVENT.IDPP4=ifelse(is.na(FF.EVENT.IDPP4),100000000,FF.EVENT.IDPP4))  
+dt_plana<-dt_plana%>%mutate(FF.EVENT.aGLP1=ifelse(is.na(FF.EVENT.aGLP1),100000000,FF.EVENT.aGLP1))  
+dt_plana<-dt_plana%>%mutate(FF.EVENT.Insul=ifelse(is.na(FF.EVENT.Insul),100000000,FF.EVENT.Insul))  
+
+
+
+
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.Metformina=ifelse  (
+                                                               FF.EVENT.Metformina<=FF.EVENT.Sulfonilureas  &
+                                                               FF.EVENT.Metformina<=FF.EVENT.Glinides  &
+                                                               FF.EVENT.Metformina<=FF.EVENT.ISGLT2  &
+                                                               FF.EVENT.Metformina<=FF.EVENT.IDPP4  &
+                                                               FF.EVENT.Metformina<=FF.EVENT.aGLP1  &
+                                                               FF.EVENT.Metformina<=FF.EVENT.Insul,FF.EVENT.Metformina,NA))  
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.pioglitazona=ifelse(FF.EVENT.pioglitazona<=FF.EVENT.Metformina  &
+                                                               FF.EVENT.pioglitazona<=FF.EVENT.Sulfonilureas  &
+                                                               FF.EVENT.pioglitazona<=FF.EVENT.Glinides  &
+                                                               FF.EVENT.pioglitazona<=FF.EVENT.ISGLT2  &
+                                                               FF.EVENT.pioglitazona<=FF.EVENT.IDPP4  &
+                                                               FF.EVENT.pioglitazona<=FF.EVENT.aGLP1  &
+                                                               FF.EVENT.pioglitazona<=FF.EVENT.Insul,FF.EVENT.pioglitazona,NA))  
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.Sulfonilureas=ifelse(FF.EVENT.Sulfonilureas<=FF.EVENT.Metformina  &
+                                                              
+                                                               FF.EVENT.Sulfonilureas<=FF.EVENT.Glinides  &
+                                                               FF.EVENT.Sulfonilureas<=FF.EVENT.ISGLT2  &
+                                                               FF.EVENT.Sulfonilureas<=FF.EVENT.IDPP4  &
+                                                               FF.EVENT.Sulfonilureas<=FF.EVENT.aGLP1  &
+                                                               FF.EVENT.Sulfonilureas<=FF.EVENT.Insul,FF.EVENT.Sulfonilureas,NA))  
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.Glinides=ifelse(    FF.EVENT.Glinides<=FF.EVENT.Metformina  &
+                                                               
+                                                               FF.EVENT.Glinides<=FF.EVENT.Sulfonilureas  &
+                                                               FF.EVENT.Glinides<=FF.EVENT.ISGLT2  &
+                                                               FF.EVENT.Glinides<=FF.EVENT.IDPP4  &
+                                                               FF.EVENT.Glinides<=FF.EVENT.aGLP1  &
+                                                               FF.EVENT.Glinides<=FF.EVENT.Insul,FF.EVENT.Glinides,NA))  
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.ISGLT2=ifelse(      FF.EVENT.ISGLT2<=FF.EVENT.Metformina  &
+                                                               
+                                                               FF.EVENT.ISGLT2<=FF.EVENT.Sulfonilureas  &
+                                                               FF.EVENT.ISGLT2<=FF.EVENT.Glinides  &
+                                                               FF.EVENT.ISGLT2<=FF.EVENT.IDPP4  &
+                                                               FF.EVENT.ISGLT2<=FF.EVENT.aGLP1  &
+                                                               FF.EVENT.ISGLT2<=FF.EVENT.Insul,FF.EVENT.ISGLT2,NA))
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.IDPP4=ifelse(       FF.EVENT.IDPP4<=FF.EVENT.Metformina  &
+                                                               
+                                                               FF.EVENT.IDPP4<=FF.EVENT.Sulfonilureas  &
+                                                               FF.EVENT.IDPP4<=FF.EVENT.ISGLT2  &
+                                                               FF.EVENT.IDPP4<=FF.EVENT.Glinides  &
+                                                               FF.EVENT.IDPP4<=FF.EVENT.aGLP1  &
+                                                               FF.EVENT.IDPP4<=FF.EVENT.Insul,FF.EVENT.IDPP4,NA))
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.aGLP1=ifelse(             FF.EVENT.aGLP1<=FF.EVENT.Metformina  &
+                                                               
+                                                               FF.EVENT.aGLP1<=FF.EVENT.Sulfonilureas  &
+                                                               FF.EVENT.aGLP1<=FF.EVENT.ISGLT2  &
+                                                               FF.EVENT.aGLP1<=FF.EVENT.IDPP4  &
+                                                               FF.EVENT.aGLP1<=FF.EVENT.Glinides  &
+                                                               FF.EVENT.aGLP1<=FF.EVENT.Insul,FF.EVENT.aGLP1,NA))
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana<-dt_plana%>%mutate(FIRST_FF.EVENT.Insul=ifelse(             FF.EVENT.Insul<=FF.EVENT.Metformina  &
+                                                              
+                                                               FF.EVENT.Insul<=FF.EVENT.Sulfonilureas  &
+                                                               FF.EVENT.Insul<=FF.EVENT.ISGLT2  &
+                                                               FF.EVENT.Insul<=FF.EVENT.IDPP4  &
+                                                               FF.EVENT.Insul<=FF.EVENT.aGLP1  &
+                                                               FF.EVENT.Insul<=FF.EVENT.Glinides,FF.EVENT.Insul,NA))
+#--------------------------------------------------------------------------------------------------------------#
+
+
 
 
 #--------------------------------------------------------------------------------------------------------------#
@@ -210,19 +317,10 @@ dt_plana<-mutate_at(dt_plana, vars( starts_with("F365.") ), funs( if_else(.==0  
 dt_plana<-dt_plana%>%mutate(DG.NEUROPT2=ifelse(DG.NEUROPT==1,1,0)) 
 
 
+
 #vii)
-#dt_plana<-dt_plana%>%mutate(FF.Niad.Insul=ifelse(FF.Niad==1 | FF.Insul==1  ,1,0)) 
+dt_plana<-dt_plana%>%mutate(FF.Niad.Insul=ifelse(FF.Niad==1 | FF.Insul==1  ,1,0)) 
 
-#viii)
-dt_plana<-dt_plana%>%mutate(GRUP2=case_when(GRUP365.UEIP ==1~ 1,GRUP.UEIP ==0~ 0))  
-
-
-#Prova dels Grups!
-                                                   
-#table(dt_plana$GRUP.UEIP)
-#table(dt_plana$GRUP365.UEIP)
-#table(dt_plana$GRUP365.UEIPA)
-#table(dt_plana$GRUP2)
 
 
 
@@ -611,6 +709,7 @@ dt_plana<-dt_plana%>%mutate(DG.HTA2=ifelse(DG.HTA==1  |
 #"FF.Hipolipemiantes_FIB"   
 #--------------------------------------------------------------------------------------------------------------#
 #dt_plana<-dt_plana%>%mutate(DG.Hipercol2=ifelse(DG.HCOL==1  | FF.Hipolipemiantes==1 ,1,0)) 
+
 dt_plana<-dt_plana%>%mutate(DG.Hipercol2=ifelse(DG.HCOL==1  | FF.Hipolipemiantes_altres==1  |                 
                                                               FF.Hipolipemiantes_ESTA  ==1  |                   
                                                               FF.Hipolipemiantes_EZE   ==1  |        
@@ -627,7 +726,9 @@ dt_plana<-dt_plana%>%mutate(DG.Hipercol2=ifelse(DG.HCOL==1  | FF.Hipolipemiantes
 #iii) insuficiencia renal cronica : Insuficiencia Renal Cronica: #[diagnostico +segun valores de FG, FG<60]
 #--------------------------------------------------------------------------------------------------------------#
 # corregit els dia 1.xi.2020!!!
+
 dt_plana<-dt_plana%>%mutate(DG.IRC2=ifelse(DG.INS_RNC==1  | (CKDEPI.valor<60 |CAC.valor>29)  ,1,0)) 
+
 #(dt_plana$DG.IRC2)
 
 
@@ -636,20 +737,22 @@ dt_plana<-dt_plana%>%mutate(DG.IRC2=ifelse(DG.INS_RNC==1  | (CKDEPI.valor<60 |CA
 #--------------------------------------------------------------------------------------------------------------#
 #Nefropatia diabetica: [diagnostico nefropatia diabetica y(diagnostico de insuficiencia #renal y/o proteinuria y/o  [FG, FG<60 y/o CAC>30])
 # corregit els dia 1.xi.2020!!!
-dt_plana<-dt_plana%>%mutate(DG.NEFRPDM3=ifelse(  DG.NEFRPDM==1 | ( 
-                                                  DG.INS_REN_AG==1 | 
-                                                  DG.INS_RNC  ==1  | 
-                                                  CKDEPI.valor<60  |
-                                                  CAC.valor>30     |
-                                      !is.na(EXCPROTEINA.valor))   ,
-                                      1,0)) 
+
+#dt_plana<-dt_plana%>%mutate(DG.NEFRPDM3=ifelse(  DG.NEFRPDM==1 | ( 
+#                                                  DG.INS_REN_AG==1 | 
+#                                                  DG.INS_RNC  ==1  | 
+#                                                  CKDEPI.valor<60  |
+#                                                  CAC.valor>30     |
+#                                      !is.na(EXCPROTEINA.valor))   ,
+#                                      1,0)) 
 
 
 #--------------------------------------------------------------------------------------------------------------#
 ##v)* Nefropatia diabe?tica: diagnostico + CAC>300  mg/24h
 #--------------------------------------------------------------------------------------------------------------#
 dt_plana<-dt_plana%>%mutate(DG.NEFRPDM2=ifelse(DG.NEFRPDM==1 & CAC.valor>300 ,1,0)) 
-#table(dt_plana$DG.NEFRPDM2)
+
+
 #--------------------------------------------------------------------------------------------------------------#
 ##vi)*Arteriopatia periferica : diagnostico registrado o el valor de ITB (<0.9)
 #--------------------------------------------------------------------------------------------------------------#
@@ -836,22 +939,22 @@ dt_plana<-dt_plana%>%mutate(count_NIAD_ADO=(FF.Biguanidas+
                                               FF.IDPP4+
                                               FF.OtrAntidiabOrales+
                                               FF.InAlfaGluc+
-                                              FF.aGLP1))
-#
-#
+                                            FF.aGLP1))
+
+
 ################################################
 
 #2013,2012,2011,2010,2009,2008.......[falla FF.ISGLT2!!]
 
 #6.4.2021 nom?s Insulina!          
-#dt_plana<-dt_plana%>%mutate(monoInsulina_c=ifelse(count_NIAD_ADO==0 & FF.Insul==1 ,1,0))
-#dt_plana<-dt_plana%>%mutate(poliInsulina_c=ifelse(count_NIAD_ADO>=1 & FF.Insul==1 ,1,0))
+dt_plana<-dt_plana%>%mutate(monoInsulina_c=ifelse(count_NIAD_ADO==0 & FF.Insul==1 ,1,0))
+dt_plana<-dt_plana%>%mutate(poliInsulina_c=ifelse(count_NIAD_ADO>=1 & FF.Insul==1 ,1,0))
 
 
 
 
 #6.4.2021 sense Insulina!
-#dt_plana<-dt_plana%>%mutate(count_NIAD_ADO=ifelse(FF.Insul==1 ,0,count_NIAD_ADO))
+dt_plana<-dt_plana%>%mutate(count_NIAD_ADO=ifelse(FF.Insul==1 ,0,count_NIAD_ADO))
 #
 
 #table(dt_plana$count_NIAD): mirar-ho!! count_NIAD_ADO>=1 | FF.Insul==1~ 6
@@ -870,7 +973,7 @@ dt_plana<-dt_plana%>% mutate(INSUL_90=FF.Insul)
 
 #################################################################################################   
 
-table(dt_plana$count_NIAD_ADO_CAT)
+#table(dt_plana$count_NIAD_ADO_CAT)
 
 dt_plana<-dt_plana%>%mutate(count_Antidiabeticos=FF.Biguanidas+
                               FF.Sulfonilureas+
@@ -1235,7 +1338,7 @@ dt_plana<-dt_plana%>%mutate(PAS_PAD2c=case_when(     (PAS.mean<90  & PAD.mean<60
 # dt_plana<-dt_plana%>%mutate(exclusio3=ifelse(age<18,1,0))
 # dt_plana<-dt_plana%>%mutate(exclusio4=ifelse(dtindex==sortida & situacio!="A",1,0))
 
-dt_plana<-dt_plana%>%mutate(exclusio1=ifelse(INCLUSIO.DM2>=20070101,0,1))
+dt_plana<-dt_plana%>%mutate(exclusio1=ifelse(dtindex>=20070101,0,1))
 #dt_plana<-dt_plana%>%mutate(exclusio2=ifelse(dtindex>=entrada & dtindex<=sortida ,0,1))
 #dt_plana<-dt_plana%>%mutate(exclusio2=ifelse(age<18,1,0))
 #dt_plana<-dt_plana%>%mutate(exclusio3=ifelse(dtindex==sortida & situacio!="A",1,0))

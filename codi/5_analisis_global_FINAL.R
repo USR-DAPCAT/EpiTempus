@@ -11,6 +11,19 @@
 #devtools::install_github("benjaminrich/table1")
 
 
+
+#Adjunto el Excel, 
+#he cambiado el nombre del Excel para evitar confusiones,  
+#he reducido el numero de agrupadores,  están todos los que habían antes en el AGR1
+#Mas importante, 
+#el criterio de inclusion para el estudio de Carlos esta en agrupador DM2_inclusion 
+#( diagnostico y/o tratamiento antidiabético) falta solo glicada HbA1c>7.5%
+#Nuevo proyecto nuevo orden
+
+
+
+
+
 #--------------------------------------------------------------------------------------------------#
 #                           2018                                                                   #
 #--------------------------------------------------------------------------------------------------#

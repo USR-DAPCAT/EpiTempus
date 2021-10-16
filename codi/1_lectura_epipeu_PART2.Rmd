@@ -51,23 +51,20 @@ library(dplyr)
 link_source<-paste0("https://github.com/jrealgatius/Stat_codis/blob/master/funcions_propies.R","?raw=T")
 devtools::source_url(link_source)
 
-#conductor_codis<-here::here("codis_peucat.xlsx")
 
-#[17.2.2021]
+
 conductor_codis<-here::here("CATALEG_PROYECTO_Manel.xlsx")
+#[15.10.2021]
+conductor_codis2<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
+
 
 directori_dades_origen<-params$dir_dades_origen
-#   template: template.html
-#
 
-# fet avui 13.10.2021 : agr_Farmac2,agr_Farmac30
+dt_cataleg<-readxl::read_excel(conductor_codis2,col_types = "text")%>%select(cod,agr,AGR1)
 
-#17.02.2021#
-dt_cataleg<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,DM2,agr0,agr,agr1,agr_Farmac0A,agr_Farmac0B,agr_Farmac0C,agr_Farmac0D,agr_Farmac1,agr_Farmac2,agr_Farmac3,agr11,agr1_amp,agr_Niad,agr_Insul_Ado,agr_Comp_Vasc,agr_CVD,agr_Comp_Vasc2)
 
-dt_cataleg2<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(domini,cod,DM2,agr0,agr,agr1,agr_Farmac0A,agr_Farmac0B,agr_Farmac0C,agr_Farmac0D,agr_Farmac1,agr_Farmac2,agr_Farmac3,agr11,agr1_amp,agr_Niad,agr_Insul_Ado,agr_Comp_Vasc,agr_CVD,agr_Comp_Vasc2)
+dt_cataleg2<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(domini,cod,DM2,agr0,agr,agr_Farmac0A,agr_Farmac0B,agr_Farmac0C,agr_Farmac0D,agr_Farmac1,agr_Farmac2,agr_Farmac3,agr_Niad,agr_Insul_Ado,agr_Comp_Vasc,agr_CVD,agr_Comp_Vasc2)
 
-dt_cataleg4<-dt_cataleg2%>% filter(domini=="farmacs_facturats")
 
 
 
@@ -77,7 +74,8 @@ dt_cataleg4<-dt_cataleg2%>% filter(domini=="farmacs_facturats")
 # 1 Lectura -----------
 
 
-dt_plana<-readRDS(here::here(params$dir_dades_desti,"dt_plana_part1.rds"))
+dt_plana<-readRDS(here::here(params$dir_dades_desti,"dt_plana_part1a.rds"))
+dt_index<-readRDS(here::here(params$dir_dades_desti,"dt_plana_part1b.rds"))
 
 
 dt_tabaquisme<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_tabaquisme_20200206_104913.rds")) %>% as_tibble()
@@ -115,9 +113,9 @@ gc()
 
 ```{r}
 
+#dt_index
 
-
-dt_index<-dt_plana %>% select(idp,INCLUSIO.DM2)
+#dt_index<-dt_plana %>% select(idp,INCLUSIO.DM2)
 
 ```
 
@@ -136,82 +134,106 @@ memory.size(max=T)
 gc()
 
 
-dtagr_facturat_2018_EPIPEU0A<-agregar_facturacio(
+dtagr_facturat_2018_EPIPEU0<-agregar_facturacio(
   dt=dtagr_facturacio,
   bd.dindex=dt_index,
   finestra.dies=c(-Inf,0),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Farmac0A),
+  dt.agregadors=select(dt_cataleg,cod,agr=AGR1),
   prefix="FF.",
   agregar_data=T,
   cataleg_mana = T)%>%select(-dtindex)
 
-dtagr_facturat_2018_EPIPEU0B<-agregar_facturacio(
-  dt=dtagr_facturacio,
-  bd.dindex=dt_index,
-  finestra.dies=c(-Inf,0),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Farmac0B),
-  prefix="FF.",
-  agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-dtagr_facturat_2018_EPIPEU0C<-agregar_facturacio(
-  dt=dtagr_facturacio,
-  bd.dindex=dt_index,
-  finestra.dies=c(-Inf,0),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Farmac0C),
-  prefix="FF.",
-  agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-dtagr_facturat_2018_EPIPEU0D<-agregar_facturacio(
-  dt=dtagr_facturacio,
-  bd.dindex=dt_index,
-  finestra.dies=c(-Inf,0),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Farmac0D),
-  prefix="FF.",
-  agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
 
 
-
-# 
+ 
 dtagr_facturat_2018_EPIPEU1<-agregar_facturacio(
   dt=dtagr_facturacio,
   bd.dindex=dt_index,
   finestra.dies=c(0,+Inf),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Farmac1),
+  dt.agregadors=select(dt_cataleg,cod,agr=AGR1),
   prefix="FF.EVENT.",
   agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+  cataleg_mana = T)%>%select(-dtindex)
 
 
-dtagr_facturat_2018_EPIPEU2<-agregar_facturacio(
-  dt=dtagr_facturacio,
-  bd.dindex=dt_index,
-  finestra.dies=c(0,+Inf),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Farmac2),
-  prefix="FF.EVENT.",
-  agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
 
 
-dtagr_facturat_2018_EPIPEU3<-agregar_facturacio(
-  dt=dtagr_facturacio,
-  bd.dindex=dt_index,
-  finestra.dies=c(0,+Inf),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Farmac3),
-  prefix="FF.EVENT.",
-  agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+#dtagr_facturat_2018_EPIPEU0A<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(-Inf,0),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0A),
+#  prefix="FF.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex)
 
-dtagr_facturat_2018_EPIPEU4<-agregar_facturacio(
-  dt=dtagr_facturacio,
-  bd.dindex=dt_index,
-  finestra.dies=c(0,+Inf),
-  dt.agregadors=select(dt_cataleg4,cod,agr=agr_Insul_Ado),
-  prefix="FF.EVENT.",
-  agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+#dtagr_facturat_2018_EPIPEU0B<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(-Inf,0),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0B),
+#  prefix="FF.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+
+#dtagr_facturat_2018_EPIPEU0C<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(-Inf,0),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0C),
+#  prefix="FF.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+
+#dtagr_facturat_2018_EPIPEU0D<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(-Inf,0),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0D),
+#  prefix="FF.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+
+
+
+# 
+#dtagr_facturat_2018_EPIPEU1<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(0,+Inf),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac1),
+#  prefix="FF.EVENT.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+
+
+#dtagr_facturat_2018_EPIPEU2<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(0,+Inf),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac2),
+#  prefix="FF.EVENT.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+
+
+#dtagr_facturat_2018_EPIPEU3<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(0,+Inf),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac3),
+#  prefix="FF.EVENT.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
+
+#dtagr_facturat_2018_EPIPEU4<-agregar_facturacio(
+#  dt=dtagr_facturacio,
+#  bd.dindex=dt_index,
+#  finestra.dies=c(0,+Inf),
+#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Insul_Ado),
+#  prefix="FF.EVENT.",
+#  agregar_data=T,
+#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
 
 
 gc()
@@ -333,17 +355,11 @@ gc()
 #################################
 
 dt_plana<-dt_plana %>% 
-         left_join(dtagr_facturat_2018_EPIPEU0A,by=c('idp'))%>%
-          left_join(dtagr_facturat_2018_EPIPEU0B,by=c('idp'))%>%
-           left_join(dtagr_facturat_2018_EPIPEU0C,by=c('idp'))%>%
-            left_join(dtagr_facturat_2018_EPIPEU0D,by=c('idp'))%>%
-             left_join(dtagr_facturat_2018_EPIPEU1,by=c('idp'))%>%
-              left_join(dtagr_facturat_2018_EPIPEU2,by=c('idp'))%>%
-               left_join(dtagr_facturat_2018_EPIPEU3,by=c('idp'))%>%
-                left_join(dtagr_facturat_2018_EPIPEU4,by=c('idp'))%>%
-                 left_join(dtagr_variables_2018_EPIPEU,by=c('idp'))%>%
-                  left_join(dtagr_variables_2018_EPIPEU_mean,by=c('idp'))%>%
-                   left_join(dtagr_tabac_2018_EPIPEU,by=c('idp'))
+         left_join(dtagr_facturat_2018_EPIPEU0,by=c('idp'))%>%
+          left_join(dtagr_facturat_2018_EPIPEU1,by=c('idp'))%>%
+           left_join(dtagr_variables_2018_EPIPEU,by=c('idp'))%>%
+             left_join(dtagr_variables_2018_EPIPEU_mean,by=c('idp'))%>%
+               left_join(dtagr_tabac_2018_EPIPEU,by=c('idp'))
 
 
 
