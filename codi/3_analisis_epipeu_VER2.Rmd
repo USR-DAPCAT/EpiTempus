@@ -36,86 +36,17 @@ params:
 **Ventanas de agregaciones**
 
 &check; INCLUSIO.DM2                [ventana.dias=c(-Inf,0)]   <br/>
-&check; DG.(problemas de salud)     [ventana.dias=c(-Inf,0)]   <br/>
-&check; GRUP365.UEIP                [ventana.dias=c(-365,0)]   <br/>
-&check; Deriv2018.                  [ventana.dias=c(-365,0)]   <br/>
-&check; FF.(Farmacos)               [ventana.dias=c(-90,0)]    <br/>
-&check; F365.(Farmacos)             [ventana.dias=c(-365,0)]    <br/>
-&check; Analitiques+Cliniques       [ventana.dias=c(-365,0)]   <br/>
-&check; Tabaquisme                  [ventana.dias=c(-Inf,0)]   <br/>
 
 **Ultimas actualizaciones   Mayo/ 2021** 
 
 &check; Grafico Distribucion de los valores de la Glicada(HbA1c).      <br/>
-&check; Grafico Distribucion de la fecha diagnostico.      <br/>
-&check; Grafico Glicada/Terapia NIAD ADO.      <br/>
-&check; Grafico Tiempo de evolucion de la diabetes/Terapia NIAD ADO.      <br/>
-&check; Total.Prevencion Primaria.Prevencion Secundaria[GLICADA.valor, PAS.valor,PAD.valor, cLDL.valor].      <br/>
-&check; Hemos sacado los missings de todas las variables.      <br/>
-&check; Hemos sacado el PAS_PAD4, PAS_PAD4=PAS.valor<=140 & PAD.valor<=90~ 1,PAS.valor>140 & PAD.valor>90)      <br/>
-&check; Hemos sacado count_NIAD_ADO_CAT~ GLICADA.valor,de 90 dias ATRAS!                    
-&check; Hemos creado count_NIAD_ADO_CAT_365~ GLICADA.valor,de 365 dias ATRAS!                    <br/>
-&check; Hemos creado INSUL_365~ GLICADA.valor <br/>
-&check; Hemos creado count_Antidiabeticos_CAT_365~ GLICADA.valor <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 <br/>
-&check; Hemos creado GLICADA.valor <=7 &  PAS_PAD4==1 & cLDL.valor<100 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 & DG.CVD==0 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 & DG.CVD==1 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<130 & DG.CVD==0 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 & DG.CVD==1 <br/>
-&check; Hemos creado GLICADA.valor <=7 &  PAS_PAD4==1 & cLDL.valor<130 & DG.CVD==0 <br/>
-&check; Hemos creado GLICADA.valor <=7 &  PAS_PAD4==1 & cLDL.valor<100 & DG.CVD==1 <br/>
-&check; LDL sin ECV  i LDL con ECV.                           <br/>
-&check; canvio de nombre  Enfermedad Renal Cronica (ERC)      <br/>
-&check; Cambios de codigos en el Catalago.                    <br/>
-&check; Agrupadores "Edad<75 anos" us "Edad>=75 anos".        <br/>
-&check; Agregacion  CVD (Cardiovascular disease).             <br/>
-&check; Tabla Descriptiva Exploratoria General/ Edad.         <br/>
-&check; Tabla Descriptiva Exploratoria General/ Sexo.         <br/>
+
 
  
 **Realizado**
 
 &check; Grafico Distribucion de los valores de la Glicada(HbA1c).      <br/>
 &check; Grafico Distribucion de la fecha diagnostico.      <br/>
-&check; Grafico Glicada/Terapia NIAD ADO.      <br/>
-&check; Grafico Tiempo de evolucion de la diabetes/Terapia NIAD ADO.      <br/>
-&check; %Total.Prevencion Primaria.Prevencion Secundaria[GLICADA.valor, PAS.valor,PAD.valor, cLDL.valor].       <br/>
-&check; Hemos sacado los missings de todas las variables.      <br/>
-&check; Hemos sacado el PAS_PAD4, PAS_PAD4=PAS.valor<=140 & PAD.valor<=90~ 1,PAS.valor>140 & PAD.valor>90)      <br/>
-&check; Hemos sacado count_NIAD_ADO_CAT~ GLICADA.valor,de 90 dias ATRAS!                    
-&check; Hemos creado count_NIAD_ADO_CAT_365~ GLICADA.valor,de 365 dias ATRAS!                    <br/>
-&check; Hemos creado INSUL_365~ GLICADA.valor <br/>
-&check; Hemos creado count_Antidiabeticos_CAT_365~ GLICADA.valor <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 <br/>
-&check; Hemos creado GLICADA.valor <=7 &  PAS_PAD4==1 & cLDL.valor<100 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 & DG.CVD==0 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 & DG.CVD==1 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<130 & DG.CVD==0 <br/>
-&check; Hemos creado GLICADA.valor <7  &  PAS_PAD3==1 & cLDL.valor<100 & DG.CVD==1 <br/>
-&check; Hemos creado GLICADA.valor <=7 &  PAS_PAD4==1 & cLDL.valor<130 & DG.CVD==0 <br/>
-&check; Hemos creado GLICADA.valor <=7 &  PAS_PAD4==1 & cLDL.valor<100 & DG.CVD==1 <br/>
-&check; LDL sin ECV  i LDL con ECV.                           <br/>
-&check; canvio de nombre  Enfermedad Renal Cronica (ERC)      <br/>
-&check; Cambios de codigos en el Catalago.                    <br/>
-&check; Agrupadores "Edad<75 anos" us "Edad>=75 anos".        <br/>
-&check; Agregacion  CVD (Cardiovascular disease).             <br/>
-&check; Tabla Descriptiva Exploratoria General/ Edad.         <br/>
-&check; Tabla Descriptiva Exploratoria General/ Sexo.         <br/>
-&check; Agrupadores para amputaciones y revascularizaciones.  <br/>
-&check; Solo 2 grupos con ulcera/pie diabetico ( primaria+hospitales) VS .sin ulcera/pie diabetico (primaria+hospitales). <br/>
-&check; Nuevas agregaciones de diagnosticos y farmacos. <br/>
-&check; Programacion de nuevas recodificaciones. <br/>
-&check; Tabla Descriptiva Exploratoria General, por varlidacion.  <br/>
-&check; Descriptiva Exploratoria General.Todas las variables  <br/>
-&check; Tabla UEIP:[Ulceras Extremidades Inferiores y/o Pie Diabetico] /UEIPA:[Ulceras Extremidades Inferiores y/o Pie Diabetico y/o Amputaciones] <br/>
-&check; Descriptiva Exploratoria General.BASAL.  <br/>
-&check; Descriptiva Exploratoria General.Comorbilidades.  <br/>
-&check; Descriptiva Exploratoria General.Antecedentes de Pie diabetico.  <br/>
-&check; Descriptiva Exploratoria General.Exploracion.  <br/>
-&check; Descriptiva Exploratoria General.Laboratorio.  <br/>
-&check; Descriptiva Exploratoria General.Tratamiento.  <br/>
-&check; Descriptiva Exploratoria General / UEIPA .  <br/> 
 
 **Pendiente**
 
@@ -135,27 +66,16 @@ library("dplyr")
 library("lubridate")
 library("compareGroups")
 
-#
-#source(here::here("codi/Flowchart_Box_Final2.r"))
-#source(here::here("codi/criteris_exclusio_diagrama2.r"))
-#
+
 # Descarregar funcions github -
 link_source<-paste0("https://github.com/jrealgatius/Stat_codis/blob/master/funcions_propies.R","?raw=T")
 devtools::source_url(link_source)
 #######################################################
-#conductor_codis<-here::here("codis_peucat.xlsx")
-#conductor<-here::here("conductor_Epipeu.xlsx")
-#
-#
-#
-############
-#17.02.2021#
-############
 
-conductor_codis<-here::here("CATALEG_PROYECTO_Manel.xlsx")
-#[15.10.2021]
-conductor_codis2<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
-conductor<-here::here("Conductor_PROYECTO_Manel_VER2.xlsx")
+
+conductor_codis<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
+conductor<-here::here("Conductor_PROYECTO_epitempus.xlsx")
+
 ```
 
 
@@ -165,18 +85,7 @@ conductor<-here::here("Conductor_PROYECTO_Manel_VER2.xlsx")
 #######################################################
 # Llegir plana
 dt_plana<-readRDS(here::here(params$dir_dades_desti,"dt_plana2.rds")) %>% as_tibble()
-# Filtrem  i ELIMINEM els Difunts anteriors al 2019!
-#
-#
-#######################################################
 
-
-# Filtrem:
-####################################################################################
-#dt_plana<-dt_plana%>%filter(dtindex>=params$bd.dindex & dtindex<=params$bd.dindex2)
-####################################################################################
-
-#dt_plana<-dt_plana%>%filter(stringr::str_sub(dtindex,1,4)==params$ANY)
 
 
 ```
@@ -226,18 +135,16 @@ dt_plana_exc<-etiquetar(dt_plana_exc,taulavariables=conductor)
 
 
 
-#ia)
-formula_Taula00_1<-formula.text("Taula00",y="",taulavariables = conductor,dt=dt_plana_exc)
-
-
-
-#ib) Age_group
-formula_taula00_2<-formula.text("Taula00",y="age6.cat",taulavariables = conductor,dt=dt_plana_exc)
-
-#ic) Gender 
-formula_taula00_3<-formula.text("Taula00",y="sexe",taulavariables= conductor,dt=dt_plana_exc)
-
 #
+formu<-formula_table1("Taula01",y="",taulavariables=conductor,dt=dt_plana_exc)
+formu1<-formula_table1("Taula00",y="FIRST_FF.EVENT.Metformina",taulavariables=conductor,dt=dt_plana_exc)
+formu2<-formula_table1("Taula00",y="FIRST_FF.EVENT.pioglitazona",taulavariables=conductor,dt=dt_plana_exc)
+formu3<-formula_table1("Taula00",y="FIRST_FF.EVENT.Sulfonilureas",taulavariables=conductor,dt=dt_plana_exc)
+formu4<-formula_table1("Taula00",y="FIRST_FF.EVENT.Glinides",taulavariables=conductor,dt=dt_plana_exc)
+formu5<-formula_table1("Taula00",y="FIRST_FF.EVENT.ISGLT2",taulavariables=conductor,dt=dt_plana_exc)
+formu6<-formula_table1("Taula00",y="FIRST_FF.EVENT.IDPP4",taulavariables=conductor,dt=dt_plana_exc)
+formu7<-formula_table1("Taula00",y="FIRST_FF.EVENT.aGLP1",taulavariables=conductor,dt=dt_plana_exc)
+formu8<-formula_table1("Taula00",y="FIRST_FF.EVENT.Insul",taulavariables=conductor,dt=dt_plana_exc)
 
 
 ```
@@ -304,31 +211,81 @@ dt_temporal3<-dt_plana_exc%>%select(idp,PAS_PAD1b,PAS.valor,PAD.valor)%>%group_b
 dt_temporal4<-dt_plana_exc%>%select(idp,PAS_PAD1b,PAS.valor,PAD.valor)
 
 
-dt_temporal%>% as.data.frame()
-dt_temporal2%>% top_n(5)%>% as.data.frame()
+#dt_temporal%>% as.data.frame()
+#dt_temporal2%>% top_n(5)%>% as.data.frame()
 
-dt_temporal3%>% as.data.frame()
-dt_temporal4%>% top_n(5)%>% as.data.frame()
-
-
+#dt_temporal3%>% as.data.frame()
+#dt_temporal4%>% top_n(5)%>% as.data.frame()
 
 
+#FIRST_FF.EVENT.Metformina
+#FIRST_FF.EVENT.pioglitazona
+#FIRST_FF.EVENT.Sulfonilureas
+#FIRST_FF.EVENT.Glinides
+#FIRST_FF.EVENT.ISGLT2
+#FIRST_FF.EVENT.IDPP4
+#FIRST_FF.EVENT.aGLP1
+#FIRST_FF.EVENT.Insul
 
-formu<-formula_table1("Taula00",y="age6.cat",taulavariables=conductor,dt=dt_plana_exc)
-
-table1::table1(formu,data = dt_plana_exc,caption="Analisis descriptivo GENERAL  por Edad.Solo variables continuas.",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
 
 
+#
 
-#ic) Gender 
-formula_taula00_3<-formula.text("Taula00",y="sexe",taulavariables= conductor,dt=dt_plana_exc)
-
-formu<-formula_table1("Taula00",y="sexe",taulavariables=conductor,dt=dt_plana_exc)
-
+#i) GENERAL
 table1::table1(formu,
-               data = dt_plana_exc,caption="Analisis descriptivo GENERAL por Sexo.Solo variables continuas.",
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL",
                render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+#ii)            Metformina
+table1::table1(formu1,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL Metformina",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+#iii)           Pioglitazona
+table1::table1(formu2,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL Pioglitazona",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+#iv)            Sulfonilureas
+table1::table1(formu3,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL Sulfonilureas",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+#v)             Glinides
+table1::table1(formu4,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL Glinides",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+#vi)            ISGLT2
+table1::table1(formu5,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL ISGLT2",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+#vii)           IDPP4
+table1::table1(formu6,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERA IDPP4",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+#viii)          aGLP1
+table1::table1(formu7,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL aGLP1",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+#ix)            Insul
+table1::table1(formu8,
+               data = dt_plana_exc,caption="Analisis descriptivo GENERAL Insulina",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
+
+
+
+
 
 
 ```
@@ -373,7 +330,7 @@ print("En el pitjor dels casos haurien de sortir com a minim un 50% (N > 3.200).
 
 ```{r codis_diabetes2, include=T}
 
-readxl::read_excel(conductor_codis2,col_types = "text")%>%select(cod,AGR1,Descripcio)%>% filter(AGR1=="DM2_incusion")%>%select(cod,Descripcio)%>% knitr::kable(caption="Códigos ICD10  y  Fármacos Diabetes TIPO 2")
+readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,AGR1,Descripcio)%>% filter(AGR1=="DM2_incusion")%>%select(cod,Descripcio)%>% knitr::kable(caption="Códigos ICD10  y  Fármacos Diabetes TIPO 2")
 
 
 ```

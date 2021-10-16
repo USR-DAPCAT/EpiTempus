@@ -53,19 +53,12 @@ devtools::source_url(link_source)
 
 
 
-conductor_codis<-here::here("CATALEG_PROYECTO_Manel.xlsx")
-#[15.10.2021]
-conductor_codis2<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
+conductor_codis<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
 
 
 directori_dades_origen<-params$dir_dades_origen
 
-dt_cataleg<-readxl::read_excel(conductor_codis2,col_types = "text")%>%select(cod,agr,AGR1)
-
-
-dt_cataleg2<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(domini,cod,DM2,agr0,agr,agr_Farmac0A,agr_Farmac0B,agr_Farmac0C,agr_Farmac0D,agr_Farmac1,agr_Farmac2,agr_Farmac3,agr_Niad,agr_Insul_Ado,agr_Comp_Vasc,agr_CVD,agr_Comp_Vasc2)
-
-
+dt_cataleg<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,agr,AGR1)
 
 
 ```
@@ -120,7 +113,7 @@ gc()
 ```
 
 
-```{r agregacio_facturacio90dies, include=F}
+```{r agregacio_facturacio, include=F}
 # 2.3 agregacio facturacio ------------
 ## eps 3 mesos  abans!!! (minim data) 90 dies! [27.11.2020]
 
@@ -154,87 +147,6 @@ dtagr_facturat_2018_EPIPEU1<-agregar_facturacio(
   prefix="FF.EVENT.",
   agregar_data=T,
   cataleg_mana = T)%>%select(-dtindex)
-
-
-
-
-#dtagr_facturat_2018_EPIPEU0A<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(-Inf,0),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0A),
-#  prefix="FF.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex)
-
-#dtagr_facturat_2018_EPIPEU0B<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(-Inf,0),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0B),
-#  prefix="FF.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-#dtagr_facturat_2018_EPIPEU0C<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(-Inf,0),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0C),
-#  prefix="FF.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-#dtagr_facturat_2018_EPIPEU0D<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(-Inf,0),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac0D),
-#  prefix="FF.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-
-
-# 
-#dtagr_facturat_2018_EPIPEU1<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(0,+Inf),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac1),
-#  prefix="FF.EVENT.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-
-#dtagr_facturat_2018_EPIPEU2<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(0,+Inf),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac2),
-#  prefix="FF.EVENT.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-
-#dtagr_facturat_2018_EPIPEU3<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(0,+Inf),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Farmac3),
-#  prefix="FF.EVENT.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
-#dtagr_facturat_2018_EPIPEU4<-agregar_facturacio(
-#  dt=dtagr_facturacio,
-#  bd.dindex=dt_index,
-#  finestra.dies=c(0,+Inf),
-#  dt.agregadors=select(dt_cataleg2,cod,agr=agr_Insul_Ado),
-#  prefix="FF.EVENT.",
-#  agregar_data=T,
-#  cataleg_mana = T)%>%select(-dtindex,-`y[FALSE, ]`)
-
 
 gc()
 
