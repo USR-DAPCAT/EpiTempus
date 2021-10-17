@@ -277,15 +277,28 @@ dt_plana<-dt_plana%>%mutate(data_first_EVENT.ISGLT2=FIRST_FF.EVENT.ISGLT2)
 #--------------------------------------------------------------------------------------------------------------#
 dt_plana<-dt_plana%>%mutate(data_first_EVENT.IDPP4=FIRST_FF.EVENT.IDPP4) 
 #--------------------------------------------------------------------------------------------------------------#
-dt_plana<-dt_plana%>%mutate(data_first_EVENT.EVENT.aGLP1=FIRST_FF.EVENT.aGLP1)  
+dt_plana<-dt_plana%>%mutate(data_first_EVENT.aGLP1=FIRST_FF.EVENT.aGLP1)  
 #--------------------------------------------------------------------------------------------------------------#
-dt_plana<-dt_plana%>%mutate(data_first_EVENT.EVENT.Insul=FIRST_FF.EVENT.Insul)  
+dt_plana<-dt_plana%>%mutate(data_first_EVENT.Insul=FIRST_FF.EVENT.Insul)  
 #--------------------------------------------------------------------------------------------------------------#
-
-
-
-
-
+dt_plana<-dt_plana %>% mutate(Temps_Index_Metformina=as.numeric(lubridate::ymd(data_first_EVENT.Metformina)-lubridate::ymd(dtindex))/365.25)
+dt_plana<-dt_plana %>% mutate(Temps_Index_pioglitazona=as.numeric(lubridate::ymd(data_first_EVENT.pioglitazona)-lubridate::ymd(dtindex))/365.25)
+dt_plana<-dt_plana %>% mutate(Temps_Index_Sulfonilureas=as.numeric(lubridate::ymd(data_first_EVENT.Sulfonilureas)-lubridate::ymd(dtindex))/365.25)
+dt_plana<-dt_plana %>% mutate(Temps_Index_Glinides=as.numeric(lubridate::ymd(data_first_EVENT.Glinides)-lubridate::ymd(dtindex))/365.25)
+dt_plana<-dt_plana %>% mutate(Temps_Index_ISGLT2=as.numeric(lubridate::ymd(data_first_EVENT.ISGLT2)-lubridate::ymd(dtindex))/365.25)
+dt_plana<-dt_plana %>% mutate(Temps_Index_IDPP4=as.numeric(lubridate::ymd(data_first_EVENT.IDPP4)-lubridate::ymd(dtindex))/365.25)
+dt_plana<-dt_plana %>% mutate(Temps_Index_aGLP1=as.numeric(lubridate::ymd(data_first_EVENT.aGLP1)-lubridate::ymd(dtindex))/365.25)
+dt_plana<-dt_plana %>% mutate(Temps_Index_Insul=as.numeric(lubridate::ymd(data_first_EVENT.Insul)-lubridate::ymd(dtindex))/365.25)
+#--------------------------------------------------------------------------------------------------------------#
+dt_plana$Temps_Index_Metformina<-round(dt_plana$Temps_Index_Metformina,1)
+dt_plana$Temps_Index_pioglitazona<-round(dt_plana$Temps_Index_pioglitazona,1)
+dt_plana$Temps_Index_Sulfonilureas<-round(dt_plana$Temps_Index_Sulfonilureas,1)
+dt_plana$Temps_Index_Glinides<-round(dt_plana$Temps_Index_Glinides,1)
+dt_plana$Temps_Index_ISGLT2<-round(dt_plana$Temps_Index_ISGLT2,1)
+dt_plana$Temps_Index_IDPP4<-round(dt_plana$Temps_Index_IDPP4,1)
+dt_plana$Temps_Index_aGLP1<-round(dt_plana$Temps_Index_aGLP1,1)
+dt_plana$Temps_Index_Insul<-round(dt_plana$Temps_Index_Insul,1)
+#--------------------------------------------------------------------------------------------------------------#
 
 
 
