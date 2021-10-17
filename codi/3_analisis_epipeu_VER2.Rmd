@@ -153,8 +153,9 @@ formu8<-formula_table1("Taula00",y="FIRST_FF.EVENT.Insul",taulavariables=conduct
 
 ```{r resultats1, include=T}
 
-#library("MASS")
 
+
+#0)
 hist(dt_plana_exc$GLICADA.valor,
      main="Distribucion de los valores de la Glicada (HbA1c)",
      xlab="Valor del HbA1c mas proximo un ano atras de cada paciente   ",
@@ -165,41 +166,129 @@ hist(dt_plana_exc$GLICADA.valor,
      breaks = 1000,
          )
 
-
-dt_plana_exc$ENTRADA2<-as.character(dt_plana_exc$entrada)
-dt_plana_exc$DIA<-substr(dt_plana_exc$ENTRADA2,9,10)
-dt_plana_exc$MES<-substr(dt_plana_exc$ENTRADA2,6,7)
-dt_plana_exc$ANY<-substr(dt_plana_exc$ENTRADA2,1,4)
-dt_plana_exc$ENTRADA2<-paste0(dt_plana_exc$ANY,dt_plana_exc$MES,dt_plana_exc$DIA)
-#dt_plana_exc$ENTRADA2<-as.numeric(dt_plana_exc$ENTRADA2)
-
-#barplot(dt_plana_exc$ENTRADA2)
-
-#table(dt_plana_exc$ENTRADA2)
-
-#t_plana_exc$DATA_DM3<-as.character(dt_plana_exc$DATA_DM2)
-#dt_plana_exc$MES<-substr(dt_plana_exc$DATA_DM3,5,6)
-#dt_plana_exc$ANY<-substr(dt_plana_exc$DATA_DM3,1,4)
-#dt_plana_exc$DATA_DM3<-paste0(dt_plana_exc$ANY,dt_plana_exc$MES)
+#i)
+hist(dt_plana_exc$Temps_Index_Metformina,
+     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco(Metfornina)",
+     xlab="Valor del HbA1c mas proximo un ano atras de cada paciente   ",
+     ylab="Frecuencia ",
+     col="green",
+     freq=T,
+     xlim=c(0,15) ,
+     ylim=c(0,250),
+     breaks = 1000,
+         )
 
 
 
+min(dt_plana_exc$Temps_Index_Metformina, na.rm=TRUE)
+max(dt_plana_exc$Temps_Index_Metformina, na.rm=TRUE)
 
-#barplot(table(dt_plana_exc$DATA_DM3),
-#main="Distribucion de la fecha diagnostico",
-#xlab="Fecha diagnostico",
-#ylab="Frecuencia",
-#border="red",
-#col="blue",
-#density=1000,
-#horiz = F,
-#cex.names = 0.65,
-#cex.lab=0.65,
-#las=2 ,
-#font.axis=6
-#)
+#ii)
+hist(dt_plana_exc$Temps_Index_pioglitazona,
+     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco.",
+     xlab="Farmaco:Pioglitazona",
+     ylab="Frecuencia ",
+     col="green",
+     freq=T,
+     xlim=c(0,15) ,
+     ylim=c(0,250),
+     breaks = 1000,
+         )
+
+min(dt_plana_exc$Temps_Index_pioglitazona, na.rm=TRUE)
+max(dt_plana_exc$Temps_Index_pioglitazona, na.rm=TRUE)
+
+#iii)
+hist(dt_plana_exc$Temps_Index_Sulfonilureas,
+     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco.",
+     xlab="Farmaco:Sulfonilureas",
+     ylab="Frecuencia ",
+     col="green",
+     freq=T,
+     xlim=c(0,15) ,
+     ylim=c(0,250),
+     breaks = 1000,
+         )
+
+min(dt_plana_exc$Temps_Index_Sulfonilureas, na.rm=TRUE)
+max(dt_plana_exc$Temps_Index_Sulfonilureas, na.rm=TRUE)
+
+#iv)
+hist(dt_plana_exc$Temps_Index_Glinides,
+     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco.",
+     xlab="Farmaco:Glinides",
+     ylab="Frecuencia ",
+     col="green",
+     freq=T,
+     xlim=c(0,15) ,
+     ylim=c(0,250),
+     breaks = 1000,
+         )
+
+min(dt_plana_exc$Temps_Index_Glinides, na.rm=TRUE)
+max(dt_plana_exc$Temps_Index_Glinides, na.rm=TRUE)
+
+#v)
+#hist(dt_plana_exc$Temps_Index_ISGLT2,
+#     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco(ISGLT2)",
+#     xlab="Valor del HbA1c mas proximo un ano atras de cada paciente   ",
+#     ylab="Frecuencia ",
+#     col="green",
+#     freq=T,
+#     xlim=c(0,15) ,
+#     ylim=c(0,250),
+#     breaks = 1000,
+#         )
+
+#min(dt_plana_exc$Temps_Index_ISGLT2)
+#max(dt_plana_exc$Temps_Index_ISGLT2)
+
+#vi)
+hist(dt_plana_exc$Temps_Index_IDPP4,
+     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco.",
+    xlab="Farmaco:IDPP4",
+     ylab="Frecuencia ",
+     col="green",
+     freq=T,
+     xlim=c(0,15) ,
+     ylim=c(0,250),
+     breaks = 1000,
+         )
+
+min(dt_plana_exc$Temps_Index_IDPP4, na.rm=TRUE)
+max(dt_plana_exc$Temps_Index_IDPP4, na.rm=TRUE)
 
 
+#vii)
+hist(dt_plana_exc$Temps_Index_aGLP1,
+     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco.",
+     xlab="Farmaco:aGLP",
+     ylab="Frecuencia ",
+     col="green",
+     freq=T,
+     xlim=c(0,15) ,
+     ylim=c(0,250),
+     breaks = 1000,
+         )
+
+min(dt_plana_exc$Temps_Index_aGLP1, na.rm=TRUE)
+max(dt_plana_exc$Temps_Index_aGLP1, na.rm=TRUE)
+
+
+#viii)
+hist(dt_plana_exc$Temps_Index_Insul,
+     main="Distribucion de los Tiempos entre fechaIndice y Primer farmaco.",
+     xlab="Farmaco:Insulina",
+     ylab="Frecuencia ",
+     col="green",
+     freq=T,
+     xlim=c(0,15) ,
+     ylim=c(0,250),
+     breaks = 1000,
+         )
+
+min(dt_plana_exc$Temps_Index_Insul, na.rm=TRUE)
+max(dt_plana_exc$Temps_Index_Insul, na.rm=TRUE)
 
 #################################
 # eps rectificat!: #[12.07.2021]#
