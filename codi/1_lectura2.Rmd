@@ -1,0 +1,163 @@
+---
+title: 'Pharmacological Treatment at the start of TYPE 2 diabetes mellitus in Catalonia.[2007-2018]'
+author: "Jordi Real & Rai Puig"
+website: "https://github.com/USR-DAPCAT/"
+
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+
+
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    fig_caption: true
+    css: logos_css/usr_styles.css
+  pdf_document: default
+  word_document: default
+
+params:
+  dir_dades_origen: "../../DADES/EPIPEU_CAT3/dades/mostra" # "../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_desti: "dades/mostra" # dades/mostra"  # dades 
+
+---
+
+
+&nbsp;
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"https://www.idiapjgol.org/images/logo.png\" style=\"float: right ;width: 130px;\"/>')
+     $head.prepend('<img src=\"https://avatars2.githubusercontent.com/u/57066591?s=200&v=4\" style=\"margin-left:25% ;width: 80px;\"/>')
+     $head.prepend('<img src=\"logoDAP_Cat.png\" style=\"float: left:1;width: 185px;\"/>')
+   });
+</script>
+
+
+
+<div class="watermark">DRAFT</div>
+
+
+
+
+# FASE LECTURA
+
+>> Generacio de la taula plana part2 [Facturacio+Analitiques+Tabac+FUSIO FINAL TAULA PLANA (2007-2018)]
+
+```{r setup, include = FALSE}
+#rm(list=ls())
+library(dplyr)
+# Funcions 
+link_source<-paste0("https://github.com/jrealgatius/Stat_codis/blob/master/funcions_propies.R","?raw=T")
+devtools::source_url(link_source)
+
+directori_dades_origen<-params$dir_dades_origen
+
+conductor_codis<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
+dt_cataleg<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,agr,AGR1)
+
+
+```
+## 1. Lectura 
+```{r lectura part2, include=T}
+# 1 Lectura -----------
+
+#busquem aquelles bases dades ja gravades
+
+dt_plana<-readRDS(here::here(params$dir_dades_desti,"dt_plana_part1a.rds"))
+dt_index<-readRDS(here::here(params$dir_dades_desti,"dt_plana_part1b.rds"))
+dt_variables<-readRDS(here::here(params$dir_dades_desti,"dt_plana_part1c.rds"))
+dt_facturacio<-readRDS(here::here(params$dir_dades_desti,"dt_plana_part1d.rds"))
+
+#obim la base de dades del Tabaquisme
+dt_tabaquisme<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_tabaquisme_20200206_104913.rds")) %>% as_tibble()
+
+```
+## 6. PART 2
+```{r agregacio_facturacio, include=F}
+# Busco totes les FACTURACIONS assignades als agregadors del Cataleg, anteriors al dia Index.
+
+dtagr_facturacio<-dt_facturacio %>% transmute(idp,cod,dat,env)
+
+rm(dt_facturacio)
+memory.size(max=T)
+
+gc()
+
+
+dtagr_facturat_2018_epiTempusDM2_1<-agregar_facturacio(
+  dt=dtagr_facturacio,
+  bd.dindex=dt_index,
+  finestra.dies=c(-Inf,0),
+  dt.agregadors=select(dt_cataleg,cod,agr=AGR1),
+  prefix="FF.",
+  agregar_data=T,
+  cataleg_mana = T)%>%select(-dtindex)
+
+# Busco totes les FACTURACIONS assignades als agregadors del Cataleg, posteriors al dia Index, la primera, com  EVENT! .
+
+
+ 
+dtagr_facturat_2018_epiTempusDM2_2<-agregar_facturacio(
+  dt=dtagr_facturacio,
+  bd.dindex=dt_index,
+  finestra.dies=c(0,+Inf),
+  dt.agregadors=select(dt_cataleg,cod,agr=AGR1),
+  prefix="FF.EVENT.",
+  agregar_data=T,
+  cataleg_mana = T)%>%
+    select(-dtindex,idp,FF.EVENT.Metformina,FF.EVENT.pioglitazona,FF.EVENT.Sulfonilureas,FF.EVENT.Glinides,FF.EVENT.ISGLT2,FF.EVENT.IDPP4,FF.EVENT.aGLP1,FF.EVENT.Insul)
+
+gc()
+
+```
+
+```{r agregacio_variables, include=F}
+# Agregacio Analitiques+ Cliniques ------------
+# data mes propera! 365 dies abans!
+# analatiques
+
+dtagr_variables_epiTempusDM2<-agregar_analitiques(dt=dt_variables,bd.dindex=dt_index,finestra.dies = c(-365,0))%>%select(-dtindex)
+
+dt_variables_mean<-dt_variables%>%filter(cod=="PAS" | cod=="PAD")
+dtagr_variables_epiTempusDM2_mean<-agregar_analitiques(dt=dt_variables_mean,bd.dindex=dt_index,finestra.dies = c(-365,0),fun="mean")
+dtagr_variables_epiTempusDM2_mean<-dtagr_variables_epiTempusDM2_mean%>%select(idp,dtindex ,PAD.mean=PAD.valor,PAS.mean=PAS.valor)%>%select(-dtindex)
+
+
+rm(dt_variables)
+gc()
+
+
+
+
+
+```
+
+```{r agregacio_tabac, include=F}
+# Agregacio Tabaquisme ------------
+# tabaquisme: busco el tabac més proxim , mirant enrera a partir del diaIndex.
+
+dt_tabaquisme<-dt_tabaquisme %>% transmute(idp,cod="tabac",dat,val)
+dtagr_tabac_epiTempusDM2<-agregar_analitiques(dt=dt_tabaquisme,bd.dindex=dt_index,finestra.dies = c(-Inf,0))%>%select(-dtindex)
+
+rm(dt_tabaquisme)
+gc()
+
+```
+## 3. Fusion de datos
+```{r fusio2,include=F}
+
+dt_plana<-dt_plana %>% 
+         left_join(dtagr_facturat_2018_epiTempusDM2_1,by=c('idp'))%>%
+          left_join(dtagr_facturat_2018_epiTempusDM2_2,by=c('idp'))%>%
+           left_join(dtagr_variables_epiTempusDM2,by=c('idp'))%>%
+             left_join(dtagr_variables_epiTempusDM2_mean,by=c('idp'))%>%
+              left_join(dtagr_tabac_epiTempusDM2,by=c('idp'))
+
+```
+
+## 5. Salvar tabla plana
+```{r salvar}
+saveRDS(dt_plana, file=here::here(params$dir_dades_desti,"dt_plana.rds"))
+
+```

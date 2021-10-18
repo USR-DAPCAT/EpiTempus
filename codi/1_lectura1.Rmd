@@ -1,0 +1,225 @@
+---
+title: 'Pharmacological Treatment at the start of TYPE 2 diabetes mellitus in Catalonia.[2007-2018]'
+author: "Jordi Real & Rai Puig"
+website: "https://github.com/USR-DAPCAT/"
+
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+
+
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    fig_caption: true
+    css: logos_css/usr_styles.css
+  pdf_document: default
+  word_document: default
+
+params:
+  dir_dades_origen: "../../DADES/EPIPEU_CAT3/dades/mostra" # "../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_desti: "dades/mostra" # dades/mostra"  # dades 
+---
+
+
+&nbsp;
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"https://www.idiapjgol.org/images/logo.png\" style=\"float: right ;width: 130px;\"/>')
+     $head.prepend('<img src=\"https://avatars2.githubusercontent.com/u/57066591?s=200&v=4\" style=\"margin-left:25% ;width: 80px;\"/>')
+     $head.prepend('<img src=\"logoDAP_Cat.png\" style=\"float: left:1;width: 185px;\"/>')
+   });
+</script>
+
+
+
+<div class="watermark">DRAFT</div>
+
+
+
+
+# FASE LECTURA
+
+>> Generacio de la taula plana part1 [Poblacio+Problemes de salut+Generacio Dia_Index+Filtrem pacients (2007-2018)]
+
+```{r setup, include = FALSE}
+#rm(list=ls())
+library(dplyr)
+# Funcions 
+link_source<-paste0("https://github.com/jrealgatius/Stat_codis/blob/master/funcions_propies.R","?raw=T")
+devtools::source_url(link_source)
+
+conductor_codis<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
+directori_dades_origen<-params$dir_dades_origen
+
+```
+## 1. Lectura 
+```{r lectura part1, include=T}
+# 1 Lectura -----------
+
+#cridem el catàleg!
+dt_cataleg<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,agr,AGR1)
+
+
+
+#i) lectura de la Poblacio
+dt_poblacio<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_poblacio_20200206_104913.rds")) %>% as_tibble()
+
+
+#ii) lectura dels Problemes de Salut[Hospital+Caps]
+
+dt_diagnostics_HOSP<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_cmbdh_diagnostics_20200206_104913.rds")) %>% as_tibble()
+
+#26.xii.2020[2Entrega]
+dt_diagnostics_HOSP2<-data.table::fread(here::here(directori_dades_origen,"epiPEUCAT_PX_entregable_cmbdh_diagnostics_20210104_131331.txt"))%>%as_tibble()%>%select(-cingres)%>%select(idp,cod,dat,dx_pos,dalta,calta,id_ingres,origen,codificacio,agr)
+
+dt_diagnostics_HOSP<-dt_diagnostics_HOSP%>%
+  select(idp,cod,dat,agr)%>%
+  bind_rows(select(dt_diagnostics_HOSP2,idp,cod,dat,agr))
+
+dt_diagnostics_AP<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_diagnostics_20200206_104913.rds")) %>% as_tibble()
+dt_derivacions<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_derivacions_20200206_104913.rds")) %>% as_tibble()
+
+dt_procediments<-data.table::fread(here::here(directori_dades_origen,"epiPEUCAT_PX_entregable_cmbdh_procediments_20201211_095238.txt"))%>%
+  as_tibble()%>%select(idp,cod,dat,agr)
+
+
+#26.xii.2020[3Entrega]
+dt_procediments2<-data.table::fread(here::here(directori_dades_origen,"epiPEUCAT_PX_entregable_cmbdh_procediments_20210104_131331.txt"))%>%
+  as_tibble()%>%select(idp,cod,dat,agr)
+
+
+
+#i)   epiPEUCAT_PX_entregable_cmbdh_diagnostics_20210104_131331
+#ii)  epiPEUCAT_PX_entregable_cmbdh_procediments_20201211_095238
+#iii) epiPEUCAT_PX_entregable_cmbdh_procediments_20210104_131331
+
+# ho he fet 18.12.2020
+# Fusiono dt_diagnostics (E-CAP + Hospital1+Hospital2+Procediments )
+dt_diagnostics_AP_HOSP<-dt_diagnostics_AP%>%transmute(idp,cod=as.character(cod),dat,agr)%>%
+  bind_rows(select(dt_diagnostics_HOSP,idp,cod,dat,agr))%>%
+  bind_rows(dt_procediments)%>%bind_rows(dt_procediments2)
+
+
+#la necessitem per fer genearcio del Dia_Index.
+
+dt_facturacio<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_farmacs_facturats_20200206_104913.rds")) %>% as_tibble()
+
+dt_analitiques<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_variables_analitiques_20200206_104913.rds")) %>% as_tibble()
+dt_cliniques<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_variables_cliniques_20200206_104913.rds")) %>% as_tibble()
+
+# Fusiono cliniques + variables
+
+dt_variables<-dt_analitiques%>% bind_rows(dt_cliniques) %>% select(-agr) %>% 
+  left_join(select(dt_cataleg,cod,agr),by="cod") %>% 
+  select(-cod) %>% rename(cod=agr)
+
+
+
+```
+
+```{r netejar_fitxers}
+
+rm(dt_diagnostics_AP,dt_diagnostics_HOSP,dt_diagnostics_HOSP2,dt_procediments,dt_procediments2)
+
+rm(dt_analitiques,dt_cliniques)
+
+gc()
+
+
+```
+## 2. Agregacion de datos
+```{r genero_1_FILTRE}
+
+#[13.10.2021]#: Filtrem pacients (2007-2018)
+dt_poblacio<-
+  dt_poblacio  %>%
+  filter(entrada>=20060101 & sortida<=20181231)  
+
+gc()
+
+```
+
+
+
+```{r generacio_dtindex, include=F}
+
+
+
+dt_cataleg2<-dt_cataleg  %>% filter(AGR1=="DM2_incusion")
+
+
+#i) Busco la data minima del primer diagnostic de Dm2, de cada pacient.
+
+dt_index1<-agregar_problemes(select(dt_diagnostics_AP_HOSP,idp,cod,dat),
+                                           bd.dindex = 20181231,
+                                           dt.agregadors=select(dt_cataleg2,cod,agr=AGR1),
+                                           finestra.dies=c(-Inf,0),prefix = "INCLUSIO.",cataleg_mana=T) %>%  select(idp,dtindex=INCLUSIO.DM2_incusion) 
+
+
+
+#ii) Busco la data minima del primer diagnostic de Farmac facturat de Dm2, de cada pacient.
+
+
+dt_index2<- 
+  dt_facturacio %>% agregar_facturacio(finestra.dies = c(-Inf,0),
+                                     dt.agregadors=select(dt_cataleg2,cod,agr=AGR1),
+                                     prefix = "INCLUSIO.",camp_agregador="agr",agregar_data=T)%>%  
+                                     transmute(idp,dtindex=data.to.string(INCLUSIO.DM2_incusion) %>% as.numeric())
+
+
+
+#iii) Busco la data minima  d'una GLICADA >=6.5, de cada pacient.
+
+dt_index3<- 
+  dt_variables %>% filter(cod=="GLICADA") %>% filter(val>=6.5) %>% group_by(idp) %>% slice(which.min(dat)) %>% ungroup() %>% 
+  select(idp,dtindex=dat)
+
+
+
+#iv) Un cop tinc les tres Dates minimes,escolleixo la MÍNIMA.
+
+# Fusió de tot 
+dt_index<-
+  dt_index1 %>% bind_rows(dt_index2) %>% bind_rows(dt_index3) %>% 
+  group_by(idp) %>%  slice(which.min(dtindex)) %>% ungroup() 
+
+
+rm(dt_temp1,dt_temp2,dt_temp3,dt_temp4,dt_index1,dt_index2,dt_index3)
+
+#v) Resum dels codi que he agafat!.
+
+dt_cataleg2%>% arrange(agr) %>% kable(caption = "Codis ATC considerats per identificar debut/diagnostic de la diabetis tipo 2") %>% kableExtra::kable_classic_2()
+
+```
+
+```{r agregacio_diagnostics1 ,include=F}
+# Busco tots els Problemes de SALUT assignats als agregadors del Cataleg, anteriors al dia Index.
+
+dtagr_problemes_epiTempusDM2_AP_HOSP1<-agregar_problemes(select(dt_diagnostics_AP_HOSP,idp,cod,dat),
+                                        bd.dindex = dt_index,
+                                        dt.agregadors=select(dt_cataleg,cod,agr=AGR1),
+                                      finestra.dies=c(-Inf,0),prefix = "DG.",cataleg_mana=T)%>%select(-dtindex)
+
+```
+## 5. Fusio 1
+Fusionar part dels arxius agregats 
+ 
+```{r fusio1}
+dt_plana<-dt_index%>%
+left_join(dt_poblacio,by="idp")%>%
+ left_join(dtagr_problemes_epiTempusDM2_AP_HOSP1,by=c('idp'))
+```
+
+## 5. Salvar part1 
+```{r SALVAR}
+saveRDS(dt_plana,file=here::here(params$dir_dades_desti,"dt_plana_part1a.rds"))
+saveRDS(dt_index,file=here::here(params$dir_dades_desti,"dt_plana_part1b.rds"))
+saveRDS(dt_variables,file=here::here(params$dir_dades_desti,"dt_plana_part1c.rds"))
+saveRDS(dt_facturacio,file=here::here(params$dir_dades_desti,"dt_plana_part1d.rds"))
+
+
+
+```
+
