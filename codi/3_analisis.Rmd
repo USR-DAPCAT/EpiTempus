@@ -221,10 +221,11 @@ table1::table1(formu8,
 
 ```
 
+
 ```{r resultats3, include=T}
 
-
-
+#table(dt_plana_exc$First.event_Metformina)
+#table(dt_plana_exc$FF.EVENT.Metformina)
 
 #0b)
 hist(dt_plana_exc$GLICADA.valor,
@@ -239,6 +240,115 @@ hist(dt_plana_exc$GLICADA.valor,
          )
 print(paste("MIN.Glycated values(HbA1c) :",min(dt_plana_exc$GLICADA.valor, na.rm=TRUE)))
 print(paste("MAX.Glycated values(HbA1c) :",max(dt_plana_exc$GLICADA.valor, na.rm=TRUE)))
+
+
+
+
+
+
+#i) GENERAL
+table1::table1(~GLICADA.val.first | First.event_Metformina,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:Metformina",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#ii) GENERAL
+table1::table1(~GLICADA.val.first | First.event_pioglitazona,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:Pioglitazona",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#iii) GENERAL
+table1::table1(~GLICADA.val.first |First.event_Sulfonilureas,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:Sulfonilureas",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#iv) GENERAL
+table1::table1(~GLICADA.val.first | First.event_Glinides,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:Glinide",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#v) GENERAL
+table1::table1(~GLICADA.val.first | First.event_ISGLT2,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:ISGLT2",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#vi) GENERAL
+table1::table1(~GLICADA.val.first | First.event_IDPP4,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:IDPP4",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#vii) GENERAL
+table1::table1(~GLICADA.val.first | First.event_aGLP1,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:aGLP1",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#viii) GENERAL
+table1::table1(~GLICADA.val.first | First.event_Insul,
+               data = dt_plana_exc,caption="General descriptive analysis.Drug:Insulin",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+
+
+```
+
+
+```{r resultats4, include=T}
+
+#table(dt_plana_exc$First.event_Metformina)
+#table(dt_plana_exc$FF.EVENT.Metformina)
+
+
+
+
+
+#i) GENERAL
+table1::table1(~Temps_Index_Metformina ,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Metformina",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#ii) GENERAL
+table1::table1(~Temps_Index_pioglitazona ,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Pioglitazona",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#iii) GENERAL
+table1::table1(~Temps_Index_Sulfonilureas ,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Sulfonilureas",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#iv) GENERAL
+table1::table1(~Temps_Index_Glinides ,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Glinide",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#v) GENERAL
+table1::table1(~Temps_Index_ISGLT2,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:ISGLT2",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#vi) GENERAL
+table1::table1(~Temps_Index_IDPP4 ,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:IDPP4",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#vii) GENERAL
+table1::table1(~Temps_Index_aGLP1 ,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:aGLP1",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+#viii) GENERAL
+table1::table1(~Temps_Index_Insul ,
+               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Insulin",
+               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
+
+
+
+
+
+
+```
+```{r resultats5, include=T}
+
+
 
 
 
@@ -382,116 +492,6 @@ hist(dt_plana_exc$Temps_Index_Insul,
          )
 print(paste("MIN.Insulin value :",min(dt_plana_exc$Temps_Index_Insul, na.rm=TRUE)))
 print(paste("MAX.Insulin value :",max(dt_plana_exc$Temps_Index_Insul, na.rm=TRUE)))
-
-
-
-
-
-
-```
-```{r resultats4, include=T}
-
-#table(dt_plana_exc$First.event_Metformina)
-#table(dt_plana_exc$FF.EVENT.Metformina)
-
-
-
-#i) GENERAL
-table1::table1(~GLICADA.val.first | First.event_Metformina,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Metformina",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#ii) GENERAL
-table1::table1(~GLICADA.val.first | First.event_pioglitazona,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Pioglitazona",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#iii) GENERAL
-table1::table1(~GLICADA.val.first |First.event_Sulfonilureas,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Sulfonilureas",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#iv) GENERAL
-table1::table1(~GLICADA.val.first | First.event_Glinides,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Glinide",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#v) GENERAL
-table1::table1(~GLICADA.val.first | First.event_ISGLT2,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:ISGLT2",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#vi) GENERAL
-table1::table1(~GLICADA.val.first | First.event_IDPP4,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:IDPP4",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#vii) GENERAL
-table1::table1(~GLICADA.val.first | First.event_aGLP1,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:aGLP1",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#viii) GENERAL
-table1::table1(~GLICADA.val.first | First.event_Insul,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Insulin",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-
-
-
-
-
-```
-
-
-```{r resultats5, include=T}
-
-#table(dt_plana_exc$First.event_Metformina)
-#table(dt_plana_exc$FF.EVENT.Metformina)
-
-
-
-
-
-#i) GENERAL
-table1::table1(~Temps_Index_Metformina ,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Metformina",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#ii) GENERAL
-table1::table1(~Temps_Index_pioglitazona ,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Pioglitazona",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#iii) GENERAL
-table1::table1(~Temps_Index_Sulfonilureas ,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Sulfonilureas",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#iv) GENERAL
-table1::table1(~Temps_Index_Glinides ,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Glinide",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#v) GENERAL
-table1::table1(~Temps_Index_ISGLT2,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:ISGLT2",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#vi) GENERAL
-table1::table1(~Temps_Index_IDPP4 ,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:IDPP4",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#vii) GENERAL
-table1::table1(~Temps_Index_aGLP1 ,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:aGLP1",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
-
-#viii) GENERAL
-table1::table1(~Temps_Index_Insul ,
-               data = dt_plana_exc,caption="General descriptive analysis.Drug:Insulin",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)")
 
 
 
