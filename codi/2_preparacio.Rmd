@@ -193,8 +193,9 @@ dt_plana<-mutate_at(dt_plana, vars( starts_with("GRUP.") ), funs( if_else(.==0  
 dt_plana<-mutate_at(dt_plana, vars( starts_with("FFF.") ), funs( if_else(.==0  | is.na(.)  ,0,1)))
 dt_plana<-mutate_at(dt_plana, vars( starts_with("F365.") ), funs( if_else(.==0  | is.na(.)  ,0,1)))
 dt_plana<-mutate_at(dt_plana, vars( starts_with("FIRST_FF.") ), funs( if_else(.==0  | is.na(.)  ,0,1)))
-dt_plana<-mutate_at(dt_plana, vars( starts_with("First.event_") ), funs( if_else(.==0  | is.na(.)  ,0,1)))
+dt_plana<-mutate_at(dt_plana, vars(extreure.variables("Farmacs_ad",taulavariables = conductor) ), funs( if_else(.==0  | is.na(.)  ,0,1)))
 dt_plana<-mutate_at(dt_plana, vars( starts_with("Second.event_") ), funs( if_else(.==0  | is.na(.)  ,0,1)))
+
 
 
 
@@ -210,7 +211,10 @@ dt_plana<-dt_plana%>%mutate(DG.NEUROPT2=ifelse(DG.NEUROPT==1,1,0))
 #vii)
 dt_plana<-dt_plana%>%mutate(FF.Niad.Insul=ifelse(FF.Niad==1 | FF.Insul==1  ,1,0)) 
 
+#viii)
+#DG.ARTPER+DG.AVC  +DG.CI 
 
+dt_plana<-dt_plana%>%mutate(DG.ARTPER.AVC.CI=ifelse(DG.ARTPER==1 |DG.AVC==1 | DG.CI==1 ,1,0)) 
 
 
 ```
