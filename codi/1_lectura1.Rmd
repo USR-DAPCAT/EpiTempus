@@ -17,7 +17,7 @@ output:
   word_document: default
 
 params:
-  dir_dades_origen: "../../DADES/EPIPEU_CAT3/dades/mostra" # "../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_origen: "../DADES/EPIPEU_CAT3/dades/mostra" # "../../DADES/EPIPEU_CAT3/dades/mostra"
   dir_dades_desti: "dades/mostra" # dades/mostra"  # dades 
 ---
 
@@ -60,7 +60,6 @@ directori_dades_origen<-params$dir_dades_origen
 
 #cridem el catàleg!
 dt_cataleg<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,agr,AGR1)
-
 
 
 #i) lectura de la Poblacio

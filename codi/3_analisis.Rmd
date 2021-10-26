@@ -126,44 +126,16 @@ dt_plana_exc<-etiquetar(dt_plana_exc,taulavariables=conductor,camp_descripcio="d
 
 
 
-#################################
-# eps rectificat!: #[12.07.2021]#
-#################################
-
-#dt_temporal<-dt_plana_exc%>%select(idp,PAS_PAD2b,PAS.mean,PAD.mean)%>%group_by(PAS_PAD2b)%>%summarise(min(PAS.mean),max(PAS.mean),min(PAD.mean),max(PAD.mean))%>%ungroup()
-#dt_temporal2<-dt_plana_exc%>%select(idp,PAS_PAD2b,PAS.mean,PAD.mean)
-#dt_temporal3<-dt_plana_exc%>%select(idp,PAS_PAD1b,PAS.valor,PAD.valor)%>%group_by(PAS_PAD1b)%>%summarise(min(PAS.valor),max(PAS.valor),min(PAD.valor),max(PAD.valor))%>%ungroup()
-#dt_temporal4<-dt_plana_exc%>%select(idp,PAS_PAD1b,PAS.valor,PAD.valor)
-
 
 
 ```
 
-```{r formules, include=F}
 
-#fem les formules per fer les Taules:
-
-#
-formu<- formula_table1 ("Taula01",y="",taulavariables=conductor,dt=dt_plana_exc)
-
-formu1<-formula_table1("Taula00",y="First.event_Metformina",taulavariables=conductor,dt=dt_plana_exc)
-formu2<-formula_table1("Taula00",y="First.event_pioglitazona",taulavariables=conductor,dt=dt_plana_exc)
-formu3<-formula_table1("Taula00",y="First.event_Sulfonilureas",taulavariables=conductor,dt=dt_plana_exc)
-formu4<-formula_table1("Taula00",y="First.event_Glinides",taulavariables=conductor,dt=dt_plana_exc)
-formu5<-formula_table1("Taula00",y="First.event_ISGLT2",taulavariables=conductor,dt=dt_plana_exc)
-formu6<-formula_table1("Taula00",y="First.event_IDPP4",taulavariables=conductor,dt=dt_plana_exc)
-formu7<-formula_table1("Taula00",y="First.event_aGLP1",taulavariables=conductor,dt=dt_plana_exc)
-formu8<-formula_table1("Taula00",y="First.event_Insul",taulavariables=conductor,dt=dt_plana_exc)
-
-
-
-```
 ## 2. Descriptive and exploratory general.
 ```{r resultats1, include=T}
 #
 
-#render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)")
-#table1(~ age + sex + wt | treat, data=dat, topclass="Rtable1-zebra")
+formu<- formula_table1 ("Taula01",y="",taulavariables=conductor,dt=dt_plana_exc)
 
 #i) GENERAL
 table1::table1(formu,
@@ -173,109 +145,6 @@ table1::table1(formu,
 ```
 ## 3. Descriptive and exploratory general.First drug billed after diagnosis of DM2
 
-```{r resultats2, include=F}
-
-#age5.cat
-#DG.ARTPER.AVC.CI: (DG.ARTPER+DG.AVC+DG.CI)  
-#DG.IC    
-#CKDEPI.valor_CAT4              
-#CKDEPI.valor_CAT5              
-#IMC.valor_cat3
-#GLICADA_CAT3
-
-formu1b<-formula_table1("Farmacs_ad","age5.cat", taulavariables = conductor)
-formu2b<-formula_table1("Farmacs_ad","DG.ARTPER.AVC.CI", taulavariables = conductor)
-formu3b<-formula_table1("Farmacs_ad","DG.IC", taulavariables = conductor)
-formu4b<-formula_table1("Farmacs_ad","CKDEPI.valor_CAT4", taulavariables = conductor)
-formu5b<-formula_table1("Farmacs_ad","CKDEPI.valor_CAT5", taulavariables = conductor)
-formu6b<-formula_table1("Farmacs_ad","IMC.valor_cat3", taulavariables = conductor)
-formu7b<-formula_table1("Farmacs_ad","GLICADA_CAT3", taulavariables = conductor)
-
-
-
-table1::table1(formu1b,
-               data = dt_plana_exc,caption="First drug billed after diagnosis DM2 by age",topclass="Rtable1-zebra")
-
-table1::table1(formu2b,
-               data = dt_plana_exc,caption="First drug billed after diagnosis DM2 by background heart attack, stroke or ArtPer",topclass="Rtable1-zebra")
-
-
-table1::table1(formu3b,
-               data = dt_plana_exc,caption="First drug billed after diagnosis DM2 by Heart failure",topclass="Rtable1-zebra")
-
-
-table1::table1(formu4b,
-               data = dt_plana_exc,caption="First drug billed after diagnosis DM2 by FG<60(CKD-epi)",topclass="Rtable1-zebra")
-
-
-table1::table1(formu5b,
-               data = dt_plana_exc,caption="First drug billed after diagnosis DM2 by FG<30(CKD-epi)",topclass="Rtable1-zebra")
-
-
-table1::table1(formu6b,
-               data = dt_plana_exc,caption="First drug billed after diagnosis DM2 by BMI>35  ",topclass="Rtable1-zebra")
-
-
-table1::table1(formu7b,
-               data = dt_plana_exc,caption="First drug billed after diagnosis DM2 by HbA1c",topclass="Rtable1-zebra")
-```
-
-
-```{r resultats3, include=F}
-
-#ii)            Metformina
-table1::table1(formu1,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug Metformin",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-#iii)           Pioglitazona
-table1::table1(formu2,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug Pioglitazone",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-#iv)            Sulfonilureas
-table1::table1(formu3,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug Sulfonylureas",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-#v)             Glinides
-table1::table1(formu4,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug Glinides",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-#vi)            ISGLT2
-table1::table1(formu5,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug ISGLT2",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-#vii)           IDPP4
-table1::table1(formu6,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug IDPP4",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-#viii)          aGLP1
-table1::table1(formu7,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug aGLP1",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-#ix)            Insul
-table1::table1(formu8,
-               data = dt_plana_exc,caption="Descriptive analysis General.First drug Insulin",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.missing=NULL,render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-
-
-
-
-```
 
 
 ```{r resultats4, include=T}
@@ -339,17 +208,6 @@ print(paste("MAX.Glycated values(HbA1c) :",max(dt_plana_exc$GLICADA.valor, na.rm
 
 
 
-#formu<-formula.text("Farmacs_ad","GLICADA.val.first", taulavariables = conductor)
-#formu
-#
-#descrTable(formu,data=dt_plana_exc,show.p.overall = F,hide = "No") %>% 
-#  export2md(caption="Descriptive analysis")
-
-
-
-
-
-
 formu<-formula_table1("Glicada_farmac","",taulavariables = conductor)
 #i) GENERAL
 table1::table1(formu ,
@@ -358,50 +216,6 @@ table1::table1(formu ,
 
 
 
-
-
-#i) GENERAL
-#table1::table1(~GLICADA.val.first | First.event_Metformina  ,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:Metformina",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ #(PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-
-
-##ii) GENERAL
-#table1::table1(~GLICADA.val.first | First.event_pioglitazona,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:Pioglitazona",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#iii) GENERAL
-#table1::table1(~GLICADA.val.first |First.event_Sulfonilureas,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:Sulfonilureas",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#iv) GENERAL
-#table1::table1(~GLICADA.val.first | First.event_Glinides,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:Glinide",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#v) GENERAL
-#table1::table1(~GLICADA.val.first | First.event_ISGLT2,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:ISGLT2",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#vi) GENERAL
-#table1::table1(~GLICADA.val.first | First.event_IDPP4,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:IDPP4",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#vii) GENERAL
-#table1::table1(~GLICADA.val.first | First.event_aGLP1,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:aGLP1",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#viii) GENERAL
-#table1::table1(~GLICADA.val.first | First.event_Insul,
-#               data = dt_plana_exc,caption="General descriptive analysis.Drug:Insulin",
-#               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
 ```
 ## 5. Months between the onset of DM2 and the first billing.
 
@@ -421,57 +235,6 @@ table1::table1(formu ,
 
 ```
 
-
-```{r resultats7, include=T,eval=FALSE}
-
-# names(dt_plana_exc) %>% write.csv2("vars.csv")
-
-#i) GENERAL
-table1::table1(~First.event_Metformina_Temps_Index ,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Metformina",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#ii) GENERAL
-table1::table1(~First.event_pioglitazona_Temps_Index ,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Pioglitazona",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#iii) GENERAL
-table1::table1(~First.event_Sulfonilureas_Temps_Index ,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Sulfonilureas",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#iv) GENERAL
-table1::table1(~First.event_Glinides_Temps_Index,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Glinide",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#v) GENERAL
-table1::table1(~First.event_ISGLT2_Temps_Index,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:ISGLT2",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#vi) GENERAL
-table1::table1(~First.event_IDPP4_Temps_Index ,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:IDPP4",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#vii) GENERAL
-table1::table1(~First.event_aGLP1_Temps_Index ,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:aGLP1",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-#viii) GENERAL
-table1::table1(~First.event_Insul_Temps_Index ,
-               data = dt_plana_exc,caption="General descriptive analysis.Times(months) between Index date and First drug,without exclusions.Drug:Insulin",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
-
-
-
-
-
-
-```
 ## 6. Graphics of  Months between the onset of DM2 and the first billing.
 ```{r resultats8, include=T}
 
@@ -489,9 +252,6 @@ hist(dt_plana_exc$First.event_Metformina_Temps_Index,
          )
 print(paste("MIN.Metformin value :",min(dt_plana_exc$First.event_Metformina_Temps_Index, na.rm=TRUE)))
 print(paste("MAX.Metformin value :",max(dt_plana_exc$First.event_Metformina_Temps_Index, na.rm=TRUE)))
-
-
-
 
 
 #ii)
@@ -546,11 +306,6 @@ print(paste("MIN.Glinides value :",min(dt_plana_exc$First.event_Glinides_Temps_I
 print(paste("MAX.Glinides value :",max(dt_plana_exc$First.event_Glinides_Temps_Index, na.rm=TRUE)))
 
 
-
-
-
-
-
 #v)
 hist(dt_plana_exc$First.event_ISGLT2_Temps_Index,
      main="Distribution of Times(months) between Index date and First drug,without exclusions",
@@ -566,9 +321,6 @@ print(paste("MIN.ISGLT2 value :",min(dt_plana_exc$First.event_ISGLT2_Temps_Index
 print(paste("MAX.ISGLT2 value :",max(dt_plana_exc$First.event_ISGLT2_Temps_Index, na.rm=TRUE)))
 
 
-
-
-
 #vi)
 hist(dt_plana_exc$First.event_IDPP4_Temps_Index,
      main="Distribution of Times(months) between Index date and First drug,without exclusions",
@@ -582,8 +334,6 @@ hist(dt_plana_exc$First.event_IDPP4_Temps_Index,
          )
 print(paste("MIN.IDPP4 value :",min(dt_plana_exc$First.event_IDPP4_Temps_Index, na.rm=TRUE)))
 print(paste("MAX.IDPP4 value :",max(dt_plana_exc$First.event_IDPP4_Temps_Index, na.rm=TRUE)))
-
-
 
 
 #vii)
@@ -616,132 +366,51 @@ print(paste("MIN.Insulin value :",min(dt_plana_exc$First.event_Insul_Temps_Index
 print(paste("MAX.Insulin value :",max(dt_plana_exc$First.event_Insul_Temps_Index, na.rm=TRUE)))
 
 
-
-
-
-
 ```
 ## 7. Association between the second drug and the first
-```{r resultats9, include=T}
 
 
+```{r resultats9,include=T}
+
+farmcacs1r<-extreure.variables("Farmacs_ad",conductor)
+farmcacs2n<-extreure.variables("Farmacs_2n",conductor)
+
+# Funció per computar n després del segon farmac
+dt_per_fx<-function(primer_fx="First.event_Metformina") {
+  dt_plana_exc %>% filter(!!sym(primer_fx)=="Yes") %>% 
+  summarise_at(farmcacs2n,~sum(.=="Yes"))}
+
+dt_temp1<-farmcacs1r %>% map_df(~dt_per_fx(.x),.id="First drug")
 
 
+# Posar la N= del primer farmac
+dt_temp2<-dt_plana_exc %>% summarise_at(farmcacs1r,~sum(.=="Yes")) %>% 
+  pivot_longer(cols = starts_with("First."),names_to = "First drug",values_to = "N")
 
-#GENERAL First Drug/ Second Drug.
-
-table1::table1(~ Second.event_Sulfonilureas+
-                 Second.event_Glinides+
-                 Second.event_IDPP4+
-                 Second.event_pioglitazona+
-                 Second.event_ISGLT2+
-                 Second.event_aGLP1+
-                 Second.event_Insul
-                 | First.event_Metformina ,data = dt_plana_exc%>%filter( First.event_Metformina=="Yes"),caption="General descriptive analysis.First.Drug:Metformin",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)", topclass="Rtable1-grid Rtable1-shade Rtable1-times")
+# Diagonal a 0
+for (i in 1:(length(dt_temp1)-1)) {dt_temp1[i,i+1]<-0}
 
 
-table1::table1(~Second.event_Metformina+
-                 Second.event_Glinides+
-                 Second.event_IDPP4+
-                 Second.event_pioglitazona+
-                 Second.event_ISGLT2+
-                 Second.event_aGLP1+
-                 Second.event_Insul
-                 | First.event_Sulfonilureas ,data = dt_plana_exc%>%filter( First.event_Sulfonilureas=="Yes"),caption="General descriptive analysis.First.Drug:Sulfonilureas",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)", topclass="Rtable1-grid Rtable1-shade Rtable1-times")
+# Juntar nom + N + info generada
+dt_temp2 %>% left_join(dt_temp1,by="First drug") %>% etiquetar_taula(camp = "First drug",taulavariables = conductor) %>% 
+  kable(caption = "Segon fàrmac que s’associa al primer") %>% 
+  kableExtra::kable_styling()
 
 
-table1::table1(~Second.event_Metformina+
-                 Second.event_Sulfonilureas+
-                 Second.event_IDPP4+
-                 Second.event_pioglitazona+
-                 Second.event_ISGLT2+
-                 Second.event_aGLP1+
-                 Second.event_Insul
-                 | First.event_Glinides ,data = dt_plana_exc%>%filter( First.event_Glinides=="Yes"),caption="General descriptive analysis.First.Drug:Glinides",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)", topclass="Rtable1-grid Rtable1-shade Rtable1-times")
-
-
-table1::table1(~Second.event_Metformina+
-                 Second.event_Sulfonilureas+
-                 Second.event_Glinides+
-                 Second.event_pioglitazona+
-                 Second.event_ISGLT2+
-                 Second.event_aGLP1+
-                 Second.event_Insul
-                 | First.event_IDPP4 ,data = dt_plana_exc%>%filter( First.event_IDPP4=="Yes"),caption="General descriptive analysis.First.Drug:IDPP4",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-grid Rtable1-shade Rtable1-times")
-
-
-
-
-
-table1::table1(~Second.event_Metformina+
-                 Second.event_Sulfonilureas+
-                 Second.event_Glinides+
-                 Second.event_IDPP4+
-                 Second.event_ISGLT2+
-                 Second.event_aGLP1+
-                 Second.event_Insul
-                 | First.event_pioglitazona ,data = dt_plana_exc%>%filter( First.event_pioglitazona=="Yes"),caption="General descriptive analysis.First.Drug:pioglitazona",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-grid Rtable1-shade Rtable1-times")
-
-table1::table1(~Second.event_Metformina+
-                 Second.event_Sulfonilureas+
-                 Second.event_Glinides+
-                 Second.event_IDPP4+
-                 Second.event_pioglitazona+
-                 Second.event_aGLP1+
-                 Second.event_Insul
-                 | First.event_ISGLT2 ,data = dt_plana_exc%>%filter(First.event_ISGLT2=="Yes"),caption="General descriptive analysis.First.Drug:ISGLT2",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-grid Rtable1-shade Rtable1-times")
-
-table1::table1(~Second.event_Metformina+
-                 Second.event_Sulfonilureas+
-                 Second.event_Glinides+
-                 Second.event_IDPP4+
-                 Second.event_pioglitazona+
-                 Second.event_ISGLT2+
-                 Second.event_Insul
-                 | First.event_aGLP1 ,data = dt_plana_exc%>%filter(First.event_aGLP1=="Yes"),caption="General descriptive analysis.First.Drug:aGLP1",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-grid Rtable1-shade Rtable1-times")
-
-
-table1::table1(~Second.event_Metformina+
-                 Second.event_Sulfonilureas+
-                 Second.event_Glinides+
-                 Second.event_IDPP4+
-                 Second.event_pioglitazona+
-                 Second.event_ISGLT2+
-                 Second.event_aGLP1
-                 | First.event_Insul ,data = dt_plana_exc%>%filter(First.event_Insul=="Yes"),caption="General descriptive analysis.First.Drug:Insulin",
-               render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-grid Rtable1-shade Rtable1-times")
-
-```
-## 8. [E R R O R S]
-```{r resultats10, include=F}
-
-# E R R O R S !!!
-
-print("")
-print("")
-print("")
 
 
 ```
-## 9. ANNEX: TYPE 2 diabetes codes
+
+
+## 8. ANNEX: TYPE 2 diabetes codes
 ```{r codis_diabetes2, include=T}
 
 readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,AGR1,Descripcio)%>% filter(AGR1=="DM2_incusion")%>%select(cod,Descripcio)%>% knitr::kable(caption="Códigos ICD10  y  Fármacos Diabetes TIPO 2")
 
 
 ```
-## 10. Save the flat table
-```{r salvar}
-saveRDS(dt_plana_exc, file=here::here(params$dir_dades_desti,"dt_plana_exc.rds"))
 
-```
+
 &nbsp;
 <hr />
 <p style="text-align: center;">A work by $Jordi Real$ $Rai Puig$ </a></p>
