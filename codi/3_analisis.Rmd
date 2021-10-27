@@ -92,6 +92,16 @@ conductor<-here::here("Conductor_PROYECTO_epitempus.xlsx")
 # Llegir plana
 dt_plana<-readRDS(here::here(params$dir_dades_desti,"dt_plana2.rds")) %>% as_tibble()
 ```
+
+```{r recodes}
+
+
+dt_plana<-dt_plana %>% mutate(year_inclusio=stringr::str_sub(dtindex,1,4)) %>% mutate(year_inclusio=if_else(year_inclusio<=2007,"<=2007",year_inclusio))
+
+
+
+```
+
 ## 1. Flow chart 
 ```{r Flow chart, include=T}
 
@@ -129,6 +139,10 @@ dt_plana_exc<-etiquetar(dt_plana_exc,taulavariables=conductor,camp_descripcio="d
 
 
 ```
+
+
+
+
 
 
 ## 2. Descriptive and exploratory general.
@@ -181,6 +195,13 @@ descrTable(formu6c,data=dt_plana_exc,show.p.overall = F,hide = "No") %>%
 
 descrTable(formu7c,data=dt_plana_exc,show.p.overall = F,hide = "No") %>% 
   export2md(caption="First drug billed after diagnosis DM2 by HbA1c")
+
+
+formu<-formula.text("Farmacs_ad","year_inclusio", taulavariables = conductor)
+descrTable(formu,data=dt_plana_exc,show.p.overall = F,hide = "No",max.ylev = 20,max.xlev = 20) %>% 
+  export2md(caption="First drug billed after diagnosis DM2 by Year")
+
+
 
 
 ```
