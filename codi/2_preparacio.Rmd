@@ -682,15 +682,6 @@ dt_plana<-dt_plana%>% mutate(GLICADA_CAT5_PP2=case_when(GLICADA.valor <7  &
 
 
 
-
-
-
-
-#V)
-#dt_plana<-dt_plana%>% mutate(V_LDL_PP_PS=case_when(DG.CVD==0 & cLDL.valor<100~"DG.CVD==0 & cLDL.valor<100",DG.CVD==1 & cLDL.valor<100~"DG.CVD==1 & cLDL.valor<100"))
-
-
-
 #corregit : 15.7.2021 demà copiar-ho al PC Jordi.#
 #V)
 dt_plana<-dt_plana%>%mutate(LDL_100=ifelse(cLDL.valor<100 ,1,0)) 

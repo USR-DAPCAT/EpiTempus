@@ -96,7 +96,9 @@ dt_plana<-readRDS(here::here(params$dir_dades_desti,"dt_plana2.rds")) %>% as_tib
 ```{r recodes}
 
 
-dt_plana<-dt_plana %>% mutate(year_inclusio=stringr::str_sub(dtindex,1,4)) %>% mutate(year_inclusio=if_else(year_inclusio<=2007,"<=2007",year_inclusio))
+dt_plana<-dt_plana %>% mutate(year_inclusio=stringr::str_sub(dtindex,1,4)) 
+
+# %>% mutate(year_inclusio=if_else(year_inclusio<=2007,"<=2007",year_inclusio))
 
 
 
@@ -155,6 +157,8 @@ formu<- formula_table1 ("Taula01",y="",taulavariables=conductor,dt=dt_plana_exc)
 table1::table1(formu,
                data = dt_plana_exc,caption="General descriptive analysis",
                render.continuous=c(.="Mean (SD)", .="Median [Q1, Q3]"),render.categorical="FREQ (PCTnoNA%)",topclass="Rtable1-zebra")
+
+
 
 ```
 ## 3. Descriptive and exploratory general.First drug billed after diagnosis of DM2
