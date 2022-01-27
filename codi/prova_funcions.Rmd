@@ -1,0 +1,228 @@
+---
+title: 'Pharmacological Treatment at the start of TYPE 2 diabetes mellitus in Catalonia.[2007-2018]'
+author: "Jordi Real & Rai Puig"
+website: "https://github.com/USR-DAPCAT/"
+
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+
+
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    fig_caption: true
+    css: logos_css/usr_styles.css
+  pdf_document: default
+  word_document: default
+
+params:
+  dir_dades_origen: "../../DADES/EPIPEU_CAT3/dades/mostra" # "../../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_desti: "dades/mostra" # dades/mostra"  # dades 
+---
+
+
+&nbsp;
+<script>
+   $(document).ready(function() {
+     $head = $('#header');
+     $head.prepend('<img src=\"https://www.idiapjgol.org/images/logo.png\" style=\"float: right ;width: 130px;\"/>')
+     $head.prepend('<img src=\"https://avatars2.githubusercontent.com/u/57066591?s=200&v=4\" style=\"margin-left:25% ;width: 80px;\"/>')
+     $head.prepend('<img src=\"logoDAP_Cat.png\" style=\"float: left:1;width: 185px;\"/>')
+   });
+</script>
+
+
+
+<div class="watermark">DRAFT</div>
+
+
+
+
+# FASE LECTURA
+
+>> Generacio de la taula plana part1 [Poblacio+Problemes de salut+Generacio Dia_Index+Filtrem pacients (2007-2018)]
+
+```{r setup, include = FALSE}
+#rm(list=ls())
+library(dplyr)
+# Funcions 
+link_source<-paste0("https://github.com/jrealgatius/Stat_codis/blob/master/funcions_propies.R","?raw=T")
+devtools::source_url(link_source)
+
+conductor_codis<-here::here("CATALEG_PROYECTO_epitempus.xlsx")
+directori_dades_origen<-params$dir_dades_origen
+
+```
+## 1. Lectura 
+```{r lectura part1, include=T}
+# 1 Lectura -----------
+
+#cridem el catàleg!
+dt_cataleg<-readxl::read_excel(conductor_codis,col_types = "text")%>%select(cod,agr,AGR1)
+
+
+#ii) lectura dels Problemes de Salut[Hospital+Caps]
+
+dt_diagnostics_HOSP<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_cmbdh_diagnostics_20200206_104913.rds")) %>% as_tibble()
+
+#26.xii.2020[2Entrega]
+dt_diagnostics_HOSP2<-data.table::fread(here::here(directori_dades_origen,"epiPEUCAT_PX_entregable_cmbdh_diagnostics_20210104_131331.txt"))%>%as_tibble()%>%select(-cingres)%>%select(idp,cod,dat,dx_pos,dalta,calta,id_ingres,origen,codificacio,agr)
+
+dt_diagnostics_HOSP<-dt_diagnostics_HOSP%>%
+  select(idp,cod,dat,agr)%>%
+  bind_rows(select(dt_diagnostics_HOSP2,idp,cod,dat,agr))
+
+dt_diagnostics_AP<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_diagnostics_20200206_104913.rds")) %>% as_tibble()
+dt_derivacions<-readRDS(here::here(directori_dades_origen,"epiPEUCAT_entregable_derivacions_20200206_104913.rds")) %>% as_tibble()
+
+dt_procediments<-data.table::fread(here::here(directori_dades_origen,"epiPEUCAT_PX_entregable_cmbdh_procediments_20201211_095238.txt"))%>%
+  as_tibble()%>%select(idp,cod,dat,agr)
+
+
+#26.xii.2020[3Entrega]
+dt_procediments2<-data.table::fread(here::here(directori_dades_origen,"epiPEUCAT_PX_entregable_cmbdh_procediments_20210104_131331.txt"))%>%
+  as_tibble()%>%select(idp,cod,dat,agr)
+
+
+
+#i)   epiPEUCAT_PX_entregable_cmbdh_diagnostics_20210104_131331
+#ii)  epiPEUCAT_PX_entregable_cmbdh_procediments_20201211_095238
+#iii) epiPEUCAT_PX_entregable_cmbdh_procediments_20210104_131331
+
+# ho he fet 18.12.2020
+# Fusiono dt_diagnostics (E-CAP + Hospital1+Hospital2+Procediments )
+dt_diagnostics_AP_HOSP<-dt_diagnostics_AP%>%transmute(idp,cod=as.character(cod),dat,agr)%>%
+  bind_rows(select(dt_diagnostics_HOSP,idp,cod,dat,agr))%>%
+  bind_rows(dt_procediments)%>%bind_rows(dt_procediments2)
+
+
+
+
+```
+
+```{r netejar_fitxers}
+
+rm(dt_diagnostics_AP,dt_diagnostics_HOSP,dt_diagnostics_HOSP2,dt_procediments,dt_procediments2)
+
+
+
+
+```
+## 2. Agregacion de datos
+
+
+
+
+```{r generacio_dtindex, include=F}
+
+
+
+
+#i) Busco la data minima del primer diagnostic de Dm2, de cada pacient.
+
+dt_temp<-agregar_problemes(select(dt_diagnostics_AP_HOSP,idp,cod,dat),
+                                           bd.dindex = 20181231,
+                                           dt.agregadors=select(dt_cataleg,cod,agr=AGR1),
+                                           finestra.dies=c(-Inf,0),prefix = "DG.",cataleg_mana=T) 
+
+
+#function(dt=PROBLEMES,bd.dindex="20161231",dt.agregadors=CATALEG,finestra.dies=c(-Inf,0),prefix="DG.",camp_agregador="agr",keep.code=F,cataleg_mana=F)
+
+
+
+
+
+   dt=dt_diagnostics_AP_HOSP
+   bd.dindex ="20181231"
+   dt.agregadors=select(dt_cataleg,cod,agr=AGR1)
+   finestra.dies=c(-Inf,0)
+   prefix = "DG."
+   camp_agregador = "agr"
+   keep.code=F
+   cataleg_mana=T
+
+
+  ## afegir en dataindex de BDINDEX si bd.dindex<>""
+  #### Afegir + data index (+dtindex) en l'historic de problemes
+  
+  dt<-afegir_dataindex(dt,bd.dindex)
+  
+  ## filtrar per intervals de dates 
+
+  # Convertir dates a numeric
+  if (class(dt$dat)=="Date") dt$dat_num=as.numeric(dt$dat)
+  if (class(dt$dtindex)=="Date") dt$dtindex_num=as.numeric(dt$dtindex)
+  
+  if (class(dt$dat)!="Date") dt$dat_num=as.Date(as.character(dt$dat),format="%Y%m%d") %>% as.numeric()
+  if (class(dt$dtindex)!="Date") dt$dtindex_num=as.Date(as.character(dt$dtindex),format="%Y%m%d") %>% as.numeric()
+  
+  dt<-dt %>% as_tibble()
+    
+  ##### filtrar per intervals de dates 
+  dt<-dt %>% dplyr::filter(dat_num>= dtindex_num +finestra.dies[1] & 
+                             dat_num<= dtindex_num +finestra.dies[2])
+  
+  # dt<-dt[data.table::between(
+  #   lubridate::ymd(dat),
+  #   lubridate::ymd(dtindex)+finestra.dies[1],
+  #   lubridate::ymd(dtindex)+finestra.dies[2])]
+  
+  ## Filtrar CATALEG PER CAMP AGREGADOR 
+  camp_agregador_sym<-sym(camp_agregador)
+  
+  dt.agregadors<-dt.agregadors %>% 
+    dplyr::select(cod,agr=!!camp_agregador_sym) %>% 
+    filter(!is.na(agr))
+
+  ## Captura d'agregadors     ######
+  dt<-dt %>% 
+    # camps mÃ­nims que necessito per agregar 
+    dplyr::select(c(idp,dtindex,cod,dat)) %>%                                             # Selecciono camps mÃ­nims
+    # Capturo Agregador de CATALEG
+    dplyr::inner_join(dplyr::select(dt.agregadors,c(cod,agr)), by="cod")                  # Capturo agregador del cataleg
+
+  ## Formatejo 
+  dt.temp<-dt %>% 
+    # Eliminar duplicats agafant el primer registre (dat mes antiga --> minima)
+    # Agrupar= unic reg per idp-agr (mes antic segons data)
+    dplyr::group_by(idp,dtindex,agr) %>%                                          # Agrupo per idp agr
+    dplyr::slice(which.min(dat)) %>%                                              # Selecciono mÃ©s antic 
+    dplyr::ungroup() # desagrupo
+ 
+  # Si s'han d'incloure els agregadors sense codi en base de dades s'ha d'ampliar dt (dt.temp) i afegir cod null sese dat
+  
+  if (cataleg_mana) {
+    # Selecciono agregadors en cataleg sense codi en dt
+    # tots els codis que tenen algun agregador en dt i els que no
+    dt_temp2<-dplyr::select(dt,cod) %>% distinct(cod) %>% left_join(dplyr::select(dt.agregadors,c(cod,agr)),by="cod")
+    pp<-dplyr::select(dt.agregadors,agr) %>% distinct() %>% anti_join(dt_temp2 %>% distinct(agr),by="agr")
+    porca<-dt.temp %>% distinct(idp,dtindex) %>% merge(pp) %>% as_tibble() 
+    # Afegeixo en dt.temp els nous agregadors buits i fusiono amb dt.temp
+    dt.temp<-dt.temp %>% bind_rows(porca)
+    }
+  
+    # RESHAPE una data per agregador  
+    # seleccionar camps i Reshape  
+  dt.agregat<-dt.temp %>% 
+      dplyr::select(idp,agr,dat,dtindex) %>%  # Selecciono agregador i data
+    # RESHAPE per agregador i em quedo la data
+      tidyr::spread(agr,dat,sep=".")    # Reshape
+  
+  names(dt.agregat) <- sub("agr.", prefix, names(dt.agregat))   # Afegir prefix en noms de variables 
+
+  # Si MANTING codi (cod)
+  if (keep.code) {
+  dt.agregat_cod<-dt.temp %>% 
+    dplyr::select(idp,agr,cod,dtindex) %>%  # Selecciono agregador i data
+    # RESHAPE per agregador i em quedo la data
+    tidyr::spread(agr,cod,sep="_")                                                        # Reshape
+  names(dt.agregat_cod) <- sub("agr_", "cod_", names(dt.agregat_cod)) 
+  dt.agregat<-dt.agregat %>% left_join(dt.agregat_cod,by=c("idp","dtindex"))
+  }
+  
+  dt.agregat 
+
+
+```
+

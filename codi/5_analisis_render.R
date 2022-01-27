@@ -29,13 +29,13 @@
 library("dplyr")
 rm(list=ls())
 gc()
-mostra=F
+mostra=T
 dir_dades_desti="dades" 
-dir_dades_origen="../DADES/EPIPEU_CAT3/dades" 
+dir_dades_origen="../../DADES/EPIPEU_CAT3/dades" 
 
 
 if (mostra) {
-  dir_dades_origen="../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_origen="../../DADES/EPIPEU_CAT3/dades/mostra"
   dir_dades_desti="dades/mostra" }
 
 #--------------------------------------------------------------------------------------------------# 
@@ -48,11 +48,11 @@ rmarkdown::render(input="./codi/1_lectura1.Rmd",
 library("dplyr")
 rm(list=ls())
 gc()
-mostra=F
+mostra=T
 dir_dades_desti="dades" 
-dir_dades_origen="../DADES/EPIPEU_CAT3/dades" 
+dir_dades_origen="../../DADES/EPIPEU_CAT3/dades" 
 if (mostra) {
-  dir_dades_origen="../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_origen="../../DADES/EPIPEU_CAT3/dades/mostra"
   dir_dades_desti="dades/mostra" }
 #--------------------------------------------------------------------------------------------------#
 rmarkdown::render(input="./codi/1_lectura2.Rmd",
@@ -65,11 +65,11 @@ rmarkdown::render(input="./codi/1_lectura2.Rmd",
 library("dplyr")
 rm(list=ls())
 gc()
-mostra=F
+mostra=T
 dir_dades_desti="dades" 
-dir_dades_origen="../DADES/EPIPEU_CAT3/dades" 
+dir_dades_origen="../../DADES/EPIPEU_CAT3/dades" 
 if (mostra) {
-  dir_dades_origen="../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_origen="../../DADES/EPIPEU_CAT3/dades/mostra"
   dir_dades_desti="dades/mostra" }
 #--------------------------------------------------------------------------------------------------#
 ANY="20181231"
@@ -84,7 +84,7 @@ rmarkdown::render(input="./codi/2_preparacio.Rmd",
 library("dplyr")
 rm(list=ls())
 gc()
-mostra=F
+mostra=T
 dir_dades_desti="dades" 
 if (mostra) {
   dir_dades_desti="dades/mostra" }
