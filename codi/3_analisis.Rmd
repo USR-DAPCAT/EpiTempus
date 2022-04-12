@@ -12,7 +12,7 @@ output:
   word_document:
     toc: yes
 params:
-   dir_dades_desti: "dades" # dades/mostra"  # dades 
+   dir_dades_desti: "dades/mostra" # dades/mostra"  # dades 
    ANY: '2018'
    website: https://github.com/USR-DAPCAT/
 ---
@@ -90,7 +90,10 @@ conductor<-here::here("Conductor_PROYECTO_epitempus.xlsx")
 
 ```{r llegir, include = FALSE}
 # Llegir plana
+
 dades<-readRDS(here::here(params$dir_dades_desti,"dt_plana2.rds")) %>% as_tibble()
+
+
 ```
 
 ```{r recodes}
