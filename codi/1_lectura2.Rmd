@@ -17,7 +17,7 @@ output:
   word_document: default
 
 params:
-  dir_dades_origen: "../DADES/EPIPEU_CAT3/dades/mostra" # "../../DADES/EPIPEU_CAT3/dades/mostra"
+  dir_dades_origen: "../../DADES/EPIPEU_CAT3/dades/mostra" # "../../DADES/EPIPEU_CAT3/dades/mostra"
   dir_dades_desti: "dades/mostra" # dades/mostra"  # dades 
 
 ---
@@ -92,7 +92,8 @@ dtagr_facturat_epiTempusDM2_1<-agregar_facturacio(
   dt.agregadors=select(dt_cataleg,cod,agr=AGR1),
   prefix="FF.",
   agregar_data=T,
-  cataleg_mana = T)%>%select(-dtindex)
+  cataleg_mana = T)%>% 
+  mutate_at(vars(starts_with("FF.")),~data.to.string(.) %>% as.numeric())%>%select(-dtindex) 
 
 
 # Busco totes les FACTURACIONS assignades als agregadors del Cataleg, posteriors al dia Index, la primera, com  EVENT! .
@@ -515,22 +516,30 @@ gc()
 ```{r fusio2,include=F}
 
 dt_plana<-dt_plana %>% 
-              left_join(dtagr_variables_epiTempusDM2,by=c('idp'))%>%
-                left_join(dtagr_facturat_epiTempusDM2_1,by=c('idp'))%>%
-                  left_join(dtagr_facturat_epiTempusDM2_2,by=c('idp'))%>%
-                    left_join(dtagr_tabac_epiTempusDM2,by=c('idp'))%>%
-                      left_join(select(dtagr_primer_farmac_epiTempusDM2,-dtindex),by=c('idp'))%>%
-                        left_join(dtagr_segon_farmac_epiTempusDM2,by=c('idp'))%>%
-                          left_join(dtagr_variables_epiTempusDM2_mean,by=c('idp'))%>%
-                             left_join(dtagr_glicada_first_epiTempusDM2,by=c('idp'))%>%           
-                               left_join(First.event_Metformina_Glicada_Index,by=c('idp'))%>%   
-                                left_join(First.event_pioglitazona_Glicada_Index,by=c('idp'))%>%   
-                                  left_join(First.event_Sulfonilureas_Glicada_Index,by=c('idp'))%>%   
-                                    left_join(First.event_Glinides_Glicada_Index,by=c('idp'))%>%   
-                                      left_join(First.event_ISGLT2_Glicada_Index,by=c('idp'))%>%   
-                                        left_join(First.event_IDPP4_Glicada_Index,by=c('idp'))%>%   
-                                          left_join(First.event_aGLP1_Glicada_Index,by=c('idp'))%>%   
-                                           left_join(First.event_Insul_Glicada_Index,by=c('idp'))   
+    left_join(dtagr_variables_epiTempusDM2,by=c('idp'))%>%
+      left_join(dtagr_facturat_epiTempusDM2_1,by=c('idp'))%>%
+        left_join(dtagr_facturat_epiTempusDM2_2,by=c('idp'))%>%
+          left_join(dtagr_tabac_epiTempusDM2,by=c('idp'))%>%
+           left_join(dtagr_primer_farmac_epiTempusDM2,by=c('idp'))%>%
+            left_join(dtagr_segon_farmac_epiTempusDM2,by=c('idp'))%>%
+              left_join(dtagr_variables_epiTempusDM2_mean,by=c('idp'))%>%
+                left_join(dtagr_glicada_first_epiTempusDM2,by=c('idp'))%>%           
+                  left_join(First.event_Metformina_Glicada_Index,by=c('idp'))%>%   
+                   left_join(First.event_pioglitazona_Glicada_Index,by=c('idp'))%>%   
+                     left_join(First.event_Sulfonilureas_Glicada_Index,by=c('idp'))%>%   
+                       left_join(First.event_Glinides_Glicada_Index,by=c('idp'))%>%   
+                         left_join(First.event_ISGLT2_Glicada_Index,by=c('idp'))%>%   
+                           left_join(First.event_IDPP4_Glicada_Index,by=c('idp'))%>%   
+                              left_join(First.event_aGLP1_Glicada_Index,by=c('idp'))%>%   
+                                left_join(First.event_Insul_Glicada_Index,by=c('idp'))
+                                             
+  
+  
+  
+  
+                        
+  
+                         
 
 
 ```
